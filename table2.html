@@ -39,6 +39,9 @@
 	</table>
 	
 	<script>
+		let sortColumn = null;
+ 		let sortAscending = true;
+		
 		// Load CSV file and create table rows
 		fetch("example2.csv")
 			.then(response => response.text())
