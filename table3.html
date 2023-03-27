@@ -123,6 +123,9 @@
 // 				currentTh.classList.add("sort-desc");
 // 				currentTh.innerHTML += sortDescIcon;
 // 			}
+			
+			table.querySelector("tbody").innerHTML = "";
+			rows.forEach(row => table.querySelector("tbody").appendChild(row));
 // 		}
 	</script>
 </body>
