@@ -72,6 +72,8 @@
 			rows.sort((rowA, rowB) => {
 				const cellA = rowA.querySelectorAll("td")[columnIndex].innerText;
 				const cellB = rowB.querySelectorAll("td")[columnIndex].innerText;
+				const sortAscIcon = "\25b4";
+				const sortDescIcon = "\25be";
 				
 				if (isNaN(cellA) || isNaN(cellB)) {
 					return cellA.localeCompare(cellB);
