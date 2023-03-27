@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CSV to Table</title>
+</head>
+<body>
+	<table id="myTable" border="1">
+		<thead>
+			<tr>
+				<th>Column 1</th>
+				<th>Column 2</th>
+				<th>Column 3</th>
+				<th>Column 4</th>
+				<th>Column 5</th>
+			</tr>
+		</thead>
+		<tbody id="tableBody"></tbody>
+	</table>
+
+	<script>
+		// Load CSV file and create table rows
+		function loadCSV() {
+			var csvFile = "example2.csv";
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var lines = this.responseText.split("\n");
+					var table = document.getElementById("tableBody");
+					for (var i = 0; i < lines.length; i++) {
+						var row = table.insertRow(-1);
+						var cells = lines[i].split(",");
+						for (var j = 0; j < cells.length; j++) {
+							var cell = row.insertCell(j);
+							cell.innerHTML = cells[j];
+						}
+					}
+				}
+			};
+			xhttp.open("GET", csvFile, true);
+			xhttp.send();
+		}
+
+		// Call loadCSV() function to populate the table
+		loadCSV();
+	</script>
+</body>
+</html>
