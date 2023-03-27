@@ -43,6 +43,14 @@
 
 		// Call loadCSV() function to populate the table
 		loadCSV();
+		// Add click event listeners to table headers
+		var headers = document.querySelectorAll("#myTable th");
+		headers.forEach(function(header, index) {
+		  header.onclick = function() {
+		    sortTable(index);
+		  };
+		});
+
 		// Sort table by column in ascending or descending order
 		function sortTable(columnIndex) {
 			var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
