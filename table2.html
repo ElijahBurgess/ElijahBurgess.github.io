@@ -74,6 +74,17 @@
 				const cellB = rowB.querySelectorAll("td")[columnIndex].innerText;
 				const sortAscIcon = "\25b4";
 				const sortDescIcon = "\25be";
+				if (sortColumn === columnIndex) {
+					sortAscending = !sortAscending;
+				} else {
+					sortColumn = columnIndex;
+					sortAscending = true;
+				}
+
+				rows.sort((rowA, rowB) => {
+					const cellA = rowA.querySelectorAll("td")[columnIndex].innerText;
+					const cellB = rowB.querySelectorAll("td")[columnIndex].innerText;
+
 				
 				if (isNaN(cellA) || isNaN(cellB)) {
 					return cellA.localeCompare(cellB);
@@ -81,6 +92,11 @@
 					return parseFloat(cellA) - parseFloat(cellB);
 				}
 			});
+			
+			if (!sortAscending) {
+			rows.reverse();
+			
+			}
 			
 			table.querySelector("tbody").innerHTML = "";
 			rows.forEach(row => table.querySelector("tbody").appendChild(row));
