@@ -15,7 +15,94 @@
     <!-- Navigation links -->
   </nav>
   <main>
-    <!-- Content area for displaying inventory data -->
+<body>
+	<table id="myTable" border="1">
+		<thead>
+			<tr>
+				<th>Column 1</th>
+				<th>Column 2</th>
+				<th>Column 3</th>
+				<th>Column 4</th>
+				<th>Column 5</th>
+			</tr>
+		</thead>
+		<tbody id="tableBody"></tbody>
+	</table>
+
+	<script>
+		// Load CSV file and create table rows
+		function loadCSV() {
+			var csvFile = "example2.csv";
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var lines = this.responseText.split("\n");
+					var table = document.getElementById("tableBody");
+					for (var i = 0; i < lines.length; i++) {
+						var row = table.insertRow(-1);
+						var cells = lines[i].split(",");
+						for (var j = 0; j < cells.length; j++) {
+							var cell = row.insertCell(j);
+							cell.innerHTML = cells[j];
+						}
+					}
+				}
+			};
+			xhttp.open("GET", csvFile, true);
+			xhttp.send();
+		}
+
+		// Call loadCSV() function to populate the table
+		loadCSV();
+		// Add click event listeners to table headers
+		var headers = document.querySelectorAll("#myTable th");
+		headers.forEach(function(header, index) {
+		  header.onclick = function() {
+		    sortTable(index);
+		  };
+		});
+
+		// Sort table by column in ascending or descending order
+		function sortTable(columnIndex) {
+			var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+			table = document.getElementById("myTable");
+			switching = true;
+			// Set the sorting direction to ascending
+			dir = "asc";
+			while (switching) {
+				switching = false;
+				rows = table.rows;
+				for (i = 1; i < (rows.length - 1); i++) {
+					shouldSwitch = false;
+					x = rows[i].getElementsByTagName("td")[columnIndex];
+					y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+					if (dir == "asc") {
+						if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+							shouldSwitch = true;
+							break;
+						}
+					} else if (dir == "desc") {
+						if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+							shouldSwitch = true;
+							break;
+						}
+					}
+				}
+				if (shouldSwitch) {
+					rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+					switching = true;
+					switchcount ++;
+				} else {
+					if (switchcount == 0 && dir == "asc") {
+						dir = "desc";
+						switching = true;
+					}
+				}
+			}
+		}
+
+	</script>
+</body>
   </main>
   <footer>
     <!-- Footer content -->
