@@ -23,6 +23,7 @@
 Passwordless `ed25519` SSH is configured from this laptop (`192.168.0.149`) to all homelab nodes:
 * `ssh vm102` (or `ssh antigravity-vm`) $\rightarrow$ `agent@192.168.0.106`
 * `ssh ct104` (or `ssh apps-hub`) $\rightarrow$ `root@192.168.0.108`
+* `ssh ct105` (or `ssh boredgamer-arena`) $\rightarrow$ `root@192.168.0.109`
 * `ssh ct107` (or `ssh research-hub`) $\rightarrow$ `root@192.168.0.111`
 * `ssh pve` $\rightarrow$ `root@192.168.0.2`
 * `ssh pi` $\rightarrow$ `elib@192.168.0.88`
@@ -44,3 +45,5 @@ Passwordless `ed25519` SSH is configured from this laptop (`192.168.0.149`) to a
    ```
 3. **Wire Cloudflare Tunnel on `CT 104` (`192.168.0.108`):**
    `cloudflared` is already installed on `ct104` (`/usr/local/bin/cloudflared`). Point your tunnel ingress for `api.<yourdomain>` to `http://127.0.0.1:8006`.
+4. **Adding & Migrating Projects (SOP for Future Agents):**
+   Always read **[PROJECT_WORKFLOW.md](file:///home/elib/Documents/Pi4/Website/PROJECT_WORKFLOW.md)** before adding new portfolio projects or migrating existing homelab services (`Toddler Touch Screen Lock`, `BoredGamer Arena`, `eBay Deal Hunter`, etc.).
