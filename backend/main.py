@@ -100,6 +100,14 @@ async def list_projects():
                 "summary": "Self-hosted billing pipeline that extracts coaching sessions from Google Calendar, stages client reviews, and automates Square invoicing.",
                 "live_demo_available": False,
             },
+            {
+                "id": "toddler-touch-screen-lock",
+                "title": "Toddler Touch Screen Lock — Mobile Utility App",
+                "category": "Android & Consumer Apps",
+                "stack": ["Android", "Kotlin", "Accessibility Overlay", "Google Play"],
+                "summary": "Published Android utility (Burgess Meditation LLC) that locks screen inputs during video playback so toddlers can watch without accidental taps.",
+                "live_demo_available": False,
+            },
         ]
     }
 

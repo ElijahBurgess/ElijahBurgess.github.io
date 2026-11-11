@@ -1,5 +1,6 @@
 ---
-const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'http://192.168.0.108:8006';
+const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'https://api.eliburgessconsulting.com';
+const lanApiBase = 'http://192.168.0.108:8006';
 
 const defaultProjects = [
   {
@@ -36,6 +37,15 @@ const defaultProjects = [
     stack: ['Python', 'Google Calendar API', 'Square API', 'SQLite'],
     summary:
       'Self-hosted billing pipeline that extracts coaching sessions from Google Calendar, stages client reviews, and automates Square invoicing.',
+    live_demo_available: false,
+  },
+  {
+    id: 'toddler-touch-screen-lock',
+    title: 'Toddler Touch Screen Lock — Mobile Utility App',
+    category: 'Android & Consumer Apps',
+    stack: ['Android', 'Kotlin', 'System Overlay', 'Google Play'],
+    summary:
+      'Published Android utility (Burgess Meditation LLC) that locks screen touches during video playback so kids can watch without accidental exits.',
     live_demo_available: false,
   },
 ];
@@ -164,6 +174,22 @@ const services = [
       .hero {
         padding: 5rem 0 4rem;
         border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2.5rem;
+        flex-wrap: wrap;
+      }
+      .hero-content {
+        flex: 1 1 540px;
+      }
+      .hero-avatar {
+        width: 168px;
+        height: 168px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid rgba(56, 189, 248, 0.45);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
       }
       .eyebrow {
         color: var(--accent);
@@ -356,16 +382,19 @@ const services = [
 
     <main class="container">
       <section class="hero">
-        <div class="eyebrow">Applied AI Engineering • Automation Consulting • Success Coaching</div>
-        <h1>Building intelligent systems & helping people work with clarity.</h1>
-        <p>
-          Explore my live self-hosted AI research, reinforcement learning engines, and automation
-          projects—or work with me 1-on-1 for AI workflow consulting and success coaching.
-        </p>
-        <div class="btn-row">
-          <a href="#projects" class="btn btn-primary">Explore AI Projects</a>
-          <a href="#services" class="btn btn-secondary">View Coaching & Consulting</a>
+        <div class="hero-content">
+          <div class="eyebrow">Applied AI Engineering • Automation Consulting • Success Coaching</div>
+          <h1>Building intelligent systems & helping people work with clarity.</h1>
+          <p>
+            Explore my live self-hosted AI research, reinforcement learning engines, and automation
+            projects—or work with me 1-on-1 for AI workflow consulting and success coaching.
+          </p>
+          <div class="btn-row">
+            <a href="#projects" class="btn btn-primary">Explore AI Projects</a>
+            <a href="#services" class="btn btn-secondary">View Coaching & Consulting</a>
+          </div>
         </div>
+        <img src="/images/Eliheadshot.jpg" alt="Elijah Burgess" class="hero-avatar" />
       </section>
 
       <section id="projects">
@@ -467,11 +496,17 @@ const services = [
       </div>
     </footer>
 
-    <script define:vars={{ apiBase }}>
+    <script define:vars={{ apiBase, lanApiBase }}>
+      const isLan =
+        window.location.hostname === 'localhost' ||
+        window.location.hostname.startsWith('192.168.') ||
+        window.location.hostname.startsWith('100.');
+      const resolvedApi = isLan ? lanApiBase : apiBase;
+
       async function checkHomelabHealth() {
         const textEl = document.getElementById('homelab-status-text');
         try {
-          const res = await fetch(`${apiBase}/api/health`);
+          const res = await fetch(`${resolvedApi}/api/health`);
           if (res.ok) {
             const data = await res.json();
             textEl.textContent = `Homelab Online (${data.node})`;
@@ -489,7 +524,7 @@ const services = [
         const payload = Object.fromEntries(formData.entries());
         statusEl.textContent = 'Sending...';
         try {
-          const res = await fetch(`${apiBase}/api/coaching/inquiry`, {
+          const res = await fetch(`${resolvedApi}/api/coaching/inquiry`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
