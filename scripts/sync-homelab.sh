@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+exec 9>/tmp/website-homelab-sync.lock
+flock -w 30 9
+
 export PATH="$HOME/.local/bin:$HOME/.nvm/versions/node/$(ls $HOME/.nvm/versions/node 2>/dev/null | tail -n 1)/bin:/usr/local/bin:/usr/bin:/bin"
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
