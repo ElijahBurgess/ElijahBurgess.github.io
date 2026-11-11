@@ -1,0 +1,19 @@
+# Build output
+dist/
+.astro/
+.wrangler/
+
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.production
+
+# Python / Backend
+__pycache__/
+.venv/
+*.db
+
+# OS / Editor
+.DS_Store
