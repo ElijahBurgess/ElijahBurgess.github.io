@@ -45,5 +45,6 @@ Passwordless `ed25519` SSH is configured from this laptop (`192.168.0.149`) to a
    ```
 3. **Wire Cloudflare Tunnel on `CT 104` (`192.168.0.108`):**
    `cloudflared` is already installed on `ct104` (`/usr/local/bin/cloudflared`). Point your tunnel ingress for `api.<yourdomain>` to `http://127.0.0.1:8006`.
-4. **Adding & Migrating Projects (SOP for Future Agents):**
-   Always read **[PROJECT_WORKFLOW.md](file:///home/elib/Documents/Pi4/Website/PROJECT_WORKFLOW.md)** before adding new portfolio projects or migrating existing homelab services (`Toddler Touch Screen Lock`, `BoredGamer Arena`, `eBay Deal Hunter`, etc.).
+4. **Adding & Migrating Projects (SOP & Backlog for Future Agents):**
+   * Read **[PROJECT_WORKFLOW.md](file:///home/elib/Documents/Pi4/Website/PROJECT_WORKFLOW.md)** for the 3 hosting patterns and standard deployment steps.
+   * Read **[PROJECTS_TODO.md](file:///home/elib/Documents/Pi4/Website/PROJECTS_TODO.md)** for the step-by-step implementation backlog and database/API schemas for `Toddler Touch Screen Lock`, `BoredGamer Arena` (Kingdomino & Pinochle AI), `eBay Deal Hunter`, and secondary homelab projects.
