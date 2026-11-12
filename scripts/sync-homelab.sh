@@ -26,7 +26,7 @@ ssh -o BatchMode=yes vm102 "cd /home/agent/workspace/Website && git fetch forgej
 echo "==> [3/4] Updating SMB Shared Drive copy (/home/elib/Shared/Projects/Website)..."
 if [ -d "/home/elib/Shared/Projects" ]; then
   mkdir -p /home/elib/Shared/Projects/Website
-  rsync -a --delete --exclude 'node_modules' --exclude '.git' --exclude 'dist' "$REPO_DIR/" /home/elib/Shared/Projects/Website/
+  rsync -rt --inplace --modify-window=2 --delete --exclude 'node_modules' --exclude '.git' --exclude 'dist' "$REPO_DIR/" /home/elib/Shared/Projects/Website/ || echo "Warning: SMB sync skipped or had non-fatal permission differences."
 fi
 
 echo "==> [4/4] Syncing FastAPI backend to CT 104 (/opt/apps/website-api)..."
