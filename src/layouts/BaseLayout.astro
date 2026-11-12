@@ -1,0 +1,1066 @@
+---
+import '@fontsource-variable/plus-jakarta-sans';
+import '@fontsource-variable/jetbrains-mono';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  ogImage?: string;
+  ogType?: string;
+}
+
+const {
+  title,
+  description = 'Applied AI Engineering, intelligent automation pipelines, and 1-on-1 coaching by Elijah Burgess. Built local-first with homelab & edge architectures.',
+  canonicalPath,
+  ogImage = 'https://www.eliburgessconsulting.com/images/Eliheadshot.jpg',
+  ogType = 'website',
+} = Astro.props;
+
+const siteUrl = 'https://www.eliburgessconsulting.com';
+const currentPath = canonicalPath || Astro.url.pathname;
+const canonicalUrl = new URL(currentPath, siteUrl).href;
+
+const pageTitle = title
+  ? (title.includes('Elijah Burgess') ? title : `${title} | Elijah Burgess`)
+  : 'Elijah Burgess — Applied AI Engineering, Consulting & Coaching';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl}/#person`,
+      name: 'Elijah Burgess',
+      url: siteUrl,
+      image: `${siteUrl}/images/Eliheadshot.jpg`,
+      jobTitle: 'Applied AI Engineer & Automation Consultant',
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Burgess Meditation LLC',
+      },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Madison',
+        addressRegion: 'WI',
+        addressCountry: 'US',
+      },
+      sameAs: ['https://github.com/ElijahBurgess'],
+    },
+    {
+      '@type': 'ProfessionalService',
+      '@id': `${siteUrl}/#service`,
+      name: 'Elijah Burgess Consulting',
+      url: siteUrl,
+      logo: `${siteUrl}/favicon.svg`,
+      image: `${siteUrl}/images/Eliheadshot.jpg`,
+      description:
+        'Applied AI Engineering, intelligent automation systems, and 1-on-1 success & productivity coaching.',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Madison',
+        addressRegion: 'WI',
+        addressCountry: 'US',
+      },
+      founder: {
+        '@id': `${siteUrl}/#person`,
+      },
+      priceRange: '$$',
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- OpenGraph / Facebook -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="Elijah Burgess Consulting" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <!-- Inline Global API Resolver -->
+    <script is:inline>
+      (function () {
+        var prodApi = 'https://api.eliburgessconsulting.com';
+        var lanApi = 'http://192.168.0.108:8006';
+        var h = window.location.hostname;
+        var isLan =
+          h === 'localhost' ||
+          h === '127.0.0.1' ||
+          h.indexOf('192.168.') === 0 ||
+          h.indexOf('100.') === 0;
+        window.__API_BASE__ = isLan ? lanApi : prodApi;
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container header-container">
+        <div class="header-brand-group">
+          <a href="/" class="brand-link" aria-label="Elijah Burgess Home">
+            <span class="brand-mark" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+                <rect width="64" height="64" rx="14" fill="#0b0f19" stroke="#1e293b" stroke-width="2"></rect>
+                <path d="M18 18h17M18 32h15M18 46h17M18 18v28M35 18c6 0 10.5 3 10.5 7s-4.5 7-10.5 7c6.5 0 11.5 3 11.5 7s-5 7-11.5 7" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="18" cy="18" r="3" fill="#38bdf8"></circle>
+                <circle cx="18" cy="32" r="3" fill="#38bdf8"></circle>
+                <circle cx="18" cy="46" r="3" fill="#38bdf8"></circle>
+                <circle cx="35" cy="18" r="2.5" fill="#38bdf8"></circle>
+                <circle cx="33" cy="32" r="2.5" fill="#38bdf8"></circle>
+                <circle cx="35" cy="46" r="2.5" fill="#38bdf8"></circle>
+                <circle cx="45.5" cy="25" r="2.5" fill="#10b981"></circle>
+                <circle cx="46.5" cy="39" r="2.5" fill="#10b981"></circle>
+              </svg>
+            </span>
+            <span class="brand-name">Elijah Burgess</span>
+          </a>
+
+          <!-- Homelab Pill: hidden below 920px so desktop nav never crowds -->
+          <div class="status-pill header-status-pill" data-homelab-pill title="Checking Proxmox homelab cluster...">
+            <span class="status-dot loading"></span>
+            <span class="status-label">Checking Homelab...</span>
+          </div>
+        </div>
+
+        <nav class="desktop-nav" aria-label="Primary Navigation">
+          <a href="/#services" class="nav-link">Services</a>
+          <a href="/#process" class="nav-link">Process</a>
+          <a href="/#projects" class="nav-link">AI Showcase</a>
+          <a href="/#about" class="nav-link">About</a>
+          <a href="/#faq" class="nav-link">FAQ</a>
+          <a href="/#contact" class="btn btn-primary btn-sm nav-cta">Book Intro Call</a>
+        </nav>
+
+        <div class="mobile-actions">
+          <a href="/#contact" class="btn btn-primary btn-sm mobile-cta">Book Call</a>
+          <button
+            id="mobile-menu-btn"
+            class="mobile-menu-btn"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mobile-nav-drawer"
+            aria-label="Toggle navigation"
+          >
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-nav-drawer" class="mobile-nav-drawer" hidden>
+        <div class="container mobile-drawer-inner">
+          <nav class="mobile-nav-links" aria-label="Mobile Navigation Drawer">
+            <a href="/#services" class="mobile-nav-link">
+              <span class="mobile-nav-title">Services</span>
+              <span class="mobile-nav-desc">1-on-1 Coaching & AI Consulting</span>
+            </a>
+            <a href="/#process" class="mobile-nav-link">
+              <span class="mobile-nav-title">Process</span>
+              <span class="mobile-nav-desc">Audit, build, and deploy</span>
+            </a>
+            <a href="/#projects" class="mobile-nav-link">
+              <span class="mobile-nav-title">AI Showcase</span>
+              <span class="mobile-nav-desc">Live demos, agents & homelab apps</span>
+            </a>
+            <a href="/#about" class="mobile-nav-link">
+              <span class="mobile-nav-title">About</span>
+              <span class="mobile-nav-desc">Background, credentials & values</span>
+            </a>
+            <a href="/#faq" class="mobile-nav-link">
+              <span class="mobile-nav-title">FAQ</span>
+              <span class="mobile-nav-desc">Common questions & logistics</span>
+            </a>
+          </nav>
+          <div class="mobile-drawer-footer">
+            <a href="/#contact" class="btn btn-primary btn-full">Book Intro Call</a>
+            <div class="status-pill mobile-drawer-pill" data-homelab-pill>
+              <span class="status-dot loading"></span>
+              <span class="status-label">Checking Homelab...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-container">
+        <div class="footer-left">
+          <div class="footer-brand">
+            <span class="footer-name">Elijah Burgess</span>
+            <span class="footer-sep">•</span>
+            <span class="footer-org">Burgess Meditation LLC</span>
+            <span class="footer-sep">•</span>
+            <span class="footer-loc">Madison, Wisconsin (CST)</span>
+          </div>
+          <p class="footer-tagline">
+            Applied AI Engineering, intelligent automation pipelines, and high-impact 1-on-1 coaching.
+          </p>
+          <div class="footer-homelab">
+            <div class="status-pill" data-homelab-pill title="Proxmox CT 104 API & edge cluster status">
+              <span class="status-dot loading"></span>
+              <span class="status-label">Checking Homelab...</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-right">
+          <nav class="footer-nav" aria-label="Footer Navigation">
+            <div class="footer-nav-col">
+              <span class="footer-nav-heading">Navigation</span>
+              <a href="/#services" class="footer-link">Services</a>
+              <a href="/#projects" class="footer-link">Live AI Demos</a>
+              <a href="/#contact" class="footer-link">Book 15-Min Call</a>
+            </div>
+            <div class="footer-nav-col">
+              <span class="footer-nav-heading">Connect & Legal</span>
+              <a href="https://github.com/ElijahBurgess" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub ↗</a>
+              <a href="/toddler-touch-screen-lock-privacy/" class="footer-link">Toddler Lock Privacy</a>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p class="footer-copy">
+          &copy; {new Date().getFullYear()} Elijah Burgess. All rights reserved. Self-hosted & edge-accelerated.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Interactive Client Scripts -->
+    <script is:inline>
+      // 1. Mobile Menu Toggle
+      (function initMobileMenu() {
+        var menuBtn = document.getElementById('mobile-menu-btn');
+        var drawer = document.getElementById('mobile-nav-drawer');
+        if (!menuBtn || !drawer) return;
+
+        function toggleMenu(open) {
+          var isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+          var shouldOpen = open !== undefined ? open : !isExpanded;
+          menuBtn.setAttribute('aria-expanded', String(shouldOpen));
+          menuBtn.classList.toggle('is-active', shouldOpen);
+
+          if (shouldOpen) {
+            drawer.removeAttribute('hidden');
+            // Force reflow for animation transition
+            void drawer.offsetHeight;
+            drawer.classList.add('is-open');
+            document.body.classList.add('menu-open');
+          } else {
+            drawer.classList.remove('is-open');
+            document.body.classList.remove('menu-open');
+            setTimeout(function () {
+              if (menuBtn.getAttribute('aria-expanded') !== 'true') {
+                drawer.setAttribute('hidden', '');
+              }
+            }, 200);
+          }
+        }
+
+        menuBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          toggleMenu();
+        });
+
+        // Close on nav link click
+        var links = drawer.querySelectorAll('a');
+        for (var i = 0; i < links.length; i++) {
+          links[i].addEventListener('click', function () {
+            toggleMenu(false);
+          });
+        }
+
+        // Close on Escape key
+        window.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') {
+            toggleMenu(false);
+            menuBtn.focus();
+          }
+        });
+
+        // Close on resize above mobile breakpoint
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 768 && menuBtn.getAttribute('aria-expanded') === 'true') {
+            toggleMenu(false);
+          }
+        });
+      })();
+
+      // 2. Homelab Cluster Health Ping
+      (function checkHomelabHealth() {
+        var pills = document.querySelectorAll('[data-homelab-pill]');
+        if (!pills.length) return;
+
+        var apiBase = window.__API_BASE__ || 'https://api.eliburgessconsulting.com';
+        var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+        var signal = controller ? controller.signal : undefined;
+        var timeoutId = null;
+
+        if (controller) {
+          timeoutId = setTimeout(function () {
+            controller.abort();
+          }, 3500);
+        }
+
+        fetch(apiBase + '/api/health', {
+          method: 'GET',
+          signal: signal,
+          headers: { Accept: 'application/json' },
+        })
+          .then(function (res) {
+            if (timeoutId) clearTimeout(timeoutId);
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+          })
+          .then(function (data) {
+            var isOk = data && (data.status === 'ok' || data.status === 'healthy');
+            pills.forEach(function (pill) {
+              var dot = pill.querySelector('.status-dot');
+              var label = pill.querySelector('.status-label');
+              if (dot) {
+                dot.className = 'status-dot online';
+              }
+              if (label) {
+                label.textContent = isOk ? 'Homelab Cluster Online' : 'Homelab Online';
+              }
+              pill.setAttribute('title', 'API Active at ' + apiBase);
+            });
+          })
+          .catch(function () {
+            if (timeoutId) clearTimeout(timeoutId);
+            pills.forEach(function (pill) {
+              var dot = pill.querySelector('.status-dot');
+              var label = pill.querySelector('.status-label');
+              if (dot) {
+                dot.className = 'status-dot static';
+              }
+              if (label) {
+                label.textContent = 'Edge Static Mode';
+              }
+              pill.setAttribute('title', 'Edge static cached mode active');
+            });
+          });
+      })();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  /* ==========================================================================
+     Global Design Tokens & Variables
+     ========================================================================== */
+  :root {
+    --bg: #0b0f19;
+    --surface: #111827;
+    --surface-hover: #1e293b;
+    --surface-card: #131d2e;
+    --border: #1f2937;
+    --border-subtle: #1e293b;
+    --border-highlight: #334155;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --accent: #38bdf8;
+    --accent-hover: #0ea5e9;
+    --accent-2: #10b981;
+    --accent-purple: #8b5cf6;
+    --font-sans: 'Plus Jakarta Sans Variable', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --radius-sm: 6px;
+    --radius: 12px;
+    --radius-lg: 18px;
+    --radius-pill: 9999px;
+    --header-height: 4.25rem;
+    --max-width: 1200px;
+  }
+
+  /* ==========================================================================
+     CSS Reset & Base Rules
+     ========================================================================== */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  body.menu-open {
+    overflow: hidden;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Accessible Focus Outline */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* Skip link for screen readers & keyboard navigation */
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    z-index: 9999;
+    padding: 0.625rem 1.25rem;
+    background: var(--accent);
+    color: #0b0f19;
+    font-weight: 700;
+    font-size: 0.875rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: top 0.2s ease;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* ==========================================================================
+     Shared Utility Classes
+     ========================================================================== */
+  .container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .section {
+    padding: 5rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .section {
+      padding: 3.5rem 0;
+    }
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0b0f19;
+    font-weight: 700;
+    border-color: var(--accent);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+  }
+
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+  }
+
+  .btn-secondary:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-highlight);
+    color: var(--text);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border-color: transparent;
+  }
+
+  .btn-ghost:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .btn-sm {
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+
+  .btn-full {
+    width: 100%;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    border-color: var(--border-highlight);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Tags */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    border-radius: var(--radius-pill);
+    background: rgba(56, 189, 248, 0.08);
+    color: var(--accent);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    letter-spacing: 0.02em;
+  }
+
+  /* Status Pill & Dot */
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    border-radius: var(--radius-pill);
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .status-dot.online {
+    background: var(--accent-2);
+    box-shadow: 0 0 8px var(--accent-2);
+  }
+
+  .status-dot.loading {
+    background: #eab308;
+    box-shadow: 0 0 6px #eab308;
+    animation: pulse-status 1.8s infinite ease-in-out;
+  }
+
+  .status-dot.static {
+    background: #64748b;
+    box-shadow: none;
+  }
+
+  @keyframes pulse-status {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.4;
+      transform: scale(0.85);
+    }
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .breadcrumb a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--accent);
+  }
+
+  .breadcrumb-sep {
+    color: var(--border-highlight);
+    user-select: none;
+  }
+
+  .breadcrumb-current {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* CTA Banner */
+  .cta-banner {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+    border: 1px solid var(--border-highlight);
+    border-radius: var(--radius-lg);
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ==========================================================================
+     Header & Navigation Styles
+     ========================================================================== */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(11, 15, 25, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    height: var(--header-height);
+  }
+
+  .header-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .header-brand-group {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-status-pill {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  /* Hide pill below 920px so desktop navigation never crowds */
+  @media (max-width: 920px) {
+    .header-status-pill {
+      display: none;
+    }
+  }
+
+  /* Desktop Nav */
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .nav-link {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--muted);
+    transition: color 0.15s ease;
+    text-decoration: none;
+    padding: 0.25rem 0;
+  }
+
+  .nav-link:hover {
+    color: var(--accent);
+  }
+
+  .nav-cta {
+    margin-left: 0.5rem;
+  }
+
+  /* Mobile Actions */
+  .mobile-actions {
+    display: none;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .mobile-menu-btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-highlight);
+  }
+
+  .hamburger-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: var(--text);
+    border-radius: 1px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .mobile-menu-btn.is-active .hamburger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .mobile-menu-btn.is-active .hamburger-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-btn.is-active .hamburger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile Drawer */
+  .mobile-nav-drawer {
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background: rgba(11, 15, 25, 0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    max-height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+  }
+
+  .mobile-nav-drawer.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .mobile-drawer-inner {
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .mobile-nav-link {
+    min-height: 48px;
+    padding: 0.625rem 0.875rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link:active {
+    background: var(--surface-hover);
+  }
+
+  .mobile-nav-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .mobile-nav-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.125rem;
+  }
+
+  .mobile-drawer-footer {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .mobile-drawer-pill {
+    align-self: flex-start;
+  }
+
+  @media (max-width: 768px) {
+    .desktop-nav {
+      display: none;
+    }
+    .mobile-actions {
+      display: flex;
+    }
+  }
+
+  /* ==========================================================================
+     Footer Styles
+     ========================================================================== */
+  .site-footer {
+    background: #070a11;
+    border-top: 1px solid var(--border);
+    padding-top: 4rem;
+    padding-bottom: 2.5rem;
+    margin-top: auto;
+  }
+
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-left {
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .footer-sep {
+    color: var(--border-highlight);
+    user-select: none;
+  }
+
+  .footer-org,
+  .footer-loc {
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .footer-tagline {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .footer-homelab {
+    margin-top: 0.5rem;
+  }
+
+  .footer-right {
+    display: flex;
+    gap: 3rem;
+  }
+
+  .footer-nav {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-nav-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .footer-nav-heading {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    margin-bottom: 0.375rem;
+  }
+
+  .footer-link {
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer-link:hover {
+    color: var(--accent);
+  }
+
+  .footer-bottom {
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .footer-copy {
+    font-size: 0.8125rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .site-footer {
+      padding-top: 3rem;
+    }
+    .footer-container {
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .footer-right {
+      width: 100%;
+    }
+    .footer-nav {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>

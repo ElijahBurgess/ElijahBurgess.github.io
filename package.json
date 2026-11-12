@@ -11,6 +11,9 @@
     "sync:homelab": "bash scripts/sync-homelab.sh"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "astro": "^5.1.0"
   }
 }

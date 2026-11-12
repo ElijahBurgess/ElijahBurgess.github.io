@@ -1,0 +1,1112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="BoredGamer Arena — Neural AI Board Game Lounge | Elijah Burgess"
+  description="High-performance, zero-GPU game AI engines running on Proxmox LXC. Featuring zero-copy Rust + PyO3 simulation cores, self-play ONNX neural policies, and IS-MCTS for imperfect-information card games."
+  canonicalPath="/projects/boredgamer-arena"
+>
+  <div class="project-showcase">
+    <!-- Breadcrumb -->
+    <div class="container breadcrumb-container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="/#projects">Projects</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">BoredGamer Arena</span>
+      </nav>
+    </div>
+
+    <!-- Hero Header -->
+    <section class="section hero-section">
+      <div class="container hero-container">
+        <div class="hero-content">
+          <div class="eyebrow-row">
+            <div class="eyebrow mono">
+              <span class="status-dot online"></span>
+              Reinforcement Learning & Distributed Game AI
+            </div>
+            <div class="status-pill hero-status-pill" id="arena-live-pill" title="Checking CT 105 lobby status...">
+              <span class="status-dot loading" id="arena-pill-dot"></span>
+              <span class="status-label" id="arena-pill-label">Connecting CT 105...</span>
+            </div>
+          </div>
+
+          <h1 class="hero-title">BoredGamer Arena</h1>
+          <p class="hero-summary">
+            A 24/7 multiplayer board game lounge and AI benchmark arena hosted on a Proxmox homelab LXC container.
+            Powered by high-throughput <strong>zero-copy Rust simulation engines</strong>, <strong>ONNX CPU inference</strong>,
+            and <strong>Information Set Monte Carlo Tree Search (IS-MCTS)</strong>, delivering sub-2ms neural decision-making
+            with zero dedicated GPUs.
+          </p>
+
+          <div class="tags hero-tags">
+            <span class="tag mono">Proxmox CT 105</span>
+            <span class="tag mono">Rust + PyO3</span>
+            <span class="tag mono">ONNX Runtime CPU</span>
+            <span class="tag mono">Zero-GPU Inference</span>
+            <span class="tag mono">IS-MCTS Search</span>
+            <span class="tag mono">FastAPI WebSockets</span>
+          </div>
+
+          <div class="hero-actions">
+            <a
+              href="https://arena.eliburgessconsulting.com/kingdomino/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              Play Kingdomino vs. AI ↗
+            </a>
+            <a
+              href="https://arena.eliburgessconsulting.com/pinochle/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary btn-accent-alt"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              Play Partnership Pinochle vs. AI ↗
+            </a>
+            <a
+              href="https://arena.eliburgessconsulting.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-secondary"
+            >
+              Open Main Arena Lobby ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-quick-card card">
+          <h2 class="quick-title mono">Homelab Deployment Spec</h2>
+          <div class="spec-list">
+            <div class="spec-row">
+              <span class="spec-key mono">Hosting Node</span>
+              <span class="spec-val mono text-accent">Proxmox LXC CT 105</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key mono">LXC Footprint</span>
+              <span class="spec-val mono">2 vCPU • 2048 MB RAM</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key mono">Inference Engine</span>
+              <span class="spec-val mono text-accent-2">ONNX Runtime (CPU)</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key mono">Decision Latency</span>
+              <span class="spec-val mono text-purple">&lt; 1.8 ms / evaluation</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key mono">RAM Optimization</span>
+              <span class="spec-val mono text-accent-2">Saved 1.5 GB (Zero PyTorch)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Telemetry Strip -->
+    <section class="section telemetry-section">
+      <div class="container">
+        <div class="telemetry-header">
+          <div class="eyebrow mono">Live Infrastructure Telemetry</div>
+          <div class="telemetry-meta mono">
+            <span class="telemetry-source">Proxy: CT 104 → CT 105:8400</span>
+            <span class="telemetry-sep">•</span>
+            <span class="telemetry-interval">15s Auto-Poll</span>
+          </div>
+        </div>
+
+        <div class="telemetry-grid">
+          <!-- KPI 1 -->
+          <div class="kpi-card card">
+            <div class="kpi-top">
+              <span class="kpi-label">Arena Status</span>
+              <span class="kpi-badge mono" id="kpi-ping">Ping...</span>
+            </div>
+            <div class="kpi-value mono" id="kpi-status">Connecting</div>
+            <div class="kpi-footnote" id="kpi-status-sub">Querying /api/arena/status</div>
+          </div>
+
+          <!-- KPI 2 -->
+          <div class="kpi-card card">
+            <div class="kpi-top">
+              <span class="kpi-label">Kingdomino Bots</span>
+              <span class="kpi-badge mono text-accent">ONNX</span>
+            </div>
+            <div class="kpi-value mono" id="kpi-kingdomino-bots">12</div>
+            <div class="kpi-footnote">Models: Heuristics $\rightarrow$ Deep Value Net</div>
+          </div>
+
+          <!-- KPI 3 -->
+          <div class="kpi-card card">
+            <div class="kpi-top">
+              <span class="kpi-label">Pinochle AI Bots</span>
+              <span class="kpi-badge mono text-purple">IS-MCTS</span>
+            </div>
+            <div class="kpi-value mono" id="kpi-pinochle-bots">5</div>
+            <div class="kpi-footnote">Imperfect Information Determinization</div>
+          </div>
+
+          <!-- KPI 4 -->
+          <div class="kpi-card card">
+            <div class="kpi-top">
+              <span class="kpi-label">Active Tables</span>
+              <span class="kpi-badge mono text-accent-2">Live</span>
+            </div>
+            <div class="kpi-value mono" id="kpi-tables">0</div>
+            <div class="kpi-footnote" id="kpi-tables-sub">0 Playing / 0 Waiting</div>
+          </div>
+
+          <!-- KPI 5 -->
+          <div class="kpi-card card">
+            <div class="kpi-top">
+              <span class="kpi-label">Players & Spectators</span>
+              <span class="kpi-badge mono text-accent">Active</span>
+            </div>
+            <div class="kpi-value mono" id="kpi-players">0</div>
+            <div class="kpi-footnote" id="kpi-players-sub">Connected via WebSockets</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deep-Dive Architecture Sections -->
+    <section class="section arch-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow mono">Core Engineering</div>
+          <h2 class="section-title">Zero-GPU Distributed Game AI Architecture</h2>
+          <p class="section-subtitle">
+            Running low-latency AI models across dozens of concurrent browser tables on modest homelab hardware
+            requires extreme optimization at every layer: zero-copy native simulation, compact bitboards,
+            and elimination of heavyweight Python ML dependencies.
+          </p>
+        </div>
+
+        <!-- Architecture Flow Diagram -->
+        <div class="diagram-card card">
+          <h3 class="diagram-title mono">System Dataflow & Tunnel Topology</h3>
+          <div class="diagram-flow">
+            <!-- Node 1 -->
+            <div class="flow-node">
+              <div class="node-icon">🌐</div>
+              <div class="node-title">Client Browser</div>
+              <div class="node-tech mono">React + Vite SPA</div>
+              <div class="node-desc">Multiplayer WebSockets & Canvas board rendering</div>
+            </div>
+
+            <div class="flow-arrow">
+              <span class="arrow-line"></span>
+              <span class="arrow-tag mono">WSS / 443</span>
+            </div>
+
+            <!-- Node 2 -->
+            <div class="flow-node">
+              <div class="node-icon">🛡️</div>
+              <div class="node-title">Cloudflare Edge</div>
+              <div class="node-tech mono">CT 104 Tunnel</div>
+              <div class="node-desc">Zero open router ports; secure TLS termination</div>
+            </div>
+
+            <div class="flow-arrow">
+              <span class="arrow-line"></span>
+              <span class="arrow-tag mono">LAN :8400</span>
+            </div>
+
+            <!-- Node 3 -->
+            <div class="flow-node">
+              <div class="node-icon">⚡</div>
+              <div class="node-title">FastAPI Lobby</div>
+              <div class="node-tech mono">CT 105:8400</div>
+              <div class="node-desc">Room coordination, game matchmaking & async I/O</div>
+            </div>
+
+            <div class="flow-arrow">
+              <span class="arrow-line"></span>
+              <span class="arrow-tag mono">PyO3 FFI</span>
+            </div>
+
+            <!-- Node 4 -->
+            <div class="flow-node highlight">
+              <div class="node-icon">🦀</div>
+              <div class="node-title">Rust Sim Engine</div>
+              <div class="node-tech mono">kingdomino_py & pinochle_py</div>
+              <div class="node-desc">Bitboards, 20k rollouts/s, zero GIL overhead</div>
+            </div>
+
+            <div class="flow-arrow">
+              <span class="arrow-line"></span>
+              <span class="arrow-tag mono">&lt; 2ms CPU</span>
+            </div>
+
+            <!-- Node 5 -->
+            <div class="flow-node highlight">
+              <div class="node-icon">🧠</div>
+              <div class="node-title">ONNX Runtime</div>
+              <div class="node-tech mono">CPU Quantized Graph</div>
+              <div class="node-desc">No PyTorch in RAM; 17 models evaluated locally</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Pillar Breakdown -->
+        <div class="arch-pillars-grid">
+          <!-- Pillar 1 -->
+          <div class="pillar-card card">
+            <div class="pillar-eyebrow mono text-accent">01 // High-Throughput Sim</div>
+            <h3 class="pillar-heading">Zero-Copy Rust + PyO3 Engines</h3>
+            <p class="pillar-p">
+              Card and tile game trees require thousands of rollouts per move. Pure Python implementations
+              crawl at ~200 rollouts/sec due to object allocation overhead and the GIL.
+            </p>
+            <p class="pillar-p">
+              By implementing core rules in Rust (<code>kingdomino_py</code> and <code>pinochle_py</code>) using
+              compact 64-bit integer bitboards and memory-mapped state structs, the engine achieves
+              <strong>25,000+ rollouts per second per CPU core</strong>, callable directly from Python without
+              JSON or buffer serialization.
+            </p>
+            <div class="code-box mono">
+              <pre><code>// Rust bitboard tile placement validation
+#[inline(always)]
+pub fn is_legal_placement(board: &amp;Board5x5, tile: Domino, x: i8, y: i8) -&gt; bool &#123;
+    let mask = tile.occupancy_mask(x, y);
+    (board.occupied &amp; mask) == 0 &amp;&amp; board.has_matching_adjacency(tile, x, y)
+&#125;</code></pre>
+            </div>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="pillar-card card">
+            <div class="pillar-eyebrow mono text-accent-2">02 // Memory-Lean Production</div>
+            <h3 class="pillar-heading">Self-Play RL & Zero-PyTorch ONNX Export</h3>
+            <p class="pillar-p">
+              Models are trained offline via AlphaZero-style self-play using PyTorch and reinforcement learning.
+              However, loading PyTorch into production web servers consumes ~1.8 GB RAM per worker process.
+            </p>
+            <p class="pillar-p">
+              Trained checkpoints are converted to graph-optimized, FP32/INT8 quantized <strong>ONNX formats</strong>.
+              In production on <code>CT 105</code>, the runtime operates with <code>torch_imported: false</code>,
+              cutting container memory consumption from <strong>1.9 GB down to 240 MB</strong> while executing
+              batch inference in under <strong>1.8 milliseconds</strong> on standard CPU cores.
+            </p>
+            <div class="code-box mono">
+              <pre><code># Production inference without PyTorch in memory
+session = ort.InferenceSession(
+    "models/kingdomino_policy_v4.onnx",
+    providers=["CPUExecutionProvider"]
+)
+probs = session.run(["policy_head"], &#123;"board_input": flat_tensor&#125;)[0]</code></pre>
+            </div>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="pillar-card card">
+            <div class="pillar-eyebrow mono text-purple">03 // Imperfect Information</div>
+            <h3 class="pillar-heading">Partnership Pinochle IS-MCTS</h3>
+            <p class="pillar-p">
+              Unlike chess or Kingdomino, Partnership Pinochle features hidden opponent cards, asymmetric partner hands,
+              and nuanced trump bidding tactics. Standard minimax searches fail completely.
+            </p>
+            <p class="pillar-p">
+              The AI deploys <strong>Information Set Monte Carlo Tree Search (IS-MCTS)</strong>. During each decision,
+              it samples dozens of determinizations—hypothetical card distributions strictly consistent with previous
+              void reveals, pass phases, and bid thresholds—and executes neural rollout evaluations across information sets.
+            </p>
+            <div class="code-box mono">
+              <pre><code># Determinization sampling over hidden cards
+possible_hands = constraint_solver.sample_hands(
+    revealed_voids=table.revealed_voids,
+    bidding_history=table.auction_bids,
+    hand_size=player.unplayed_count
+)
+root_node.simulate_determinizations(possible_hands, budget=400)</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bot Tier Roster Showcase -->
+    <section class="section roster-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow mono">Model Catalog</div>
+          <h2 class="section-title">AI Bot Roster & Model Tiers</h2>
+          <p class="section-subtitle">
+            Visitors can play against calibrated tiers from baseline greedy heuristics up to deep self-play neural networks.
+          </p>
+        </div>
+
+        <div class="roster-grid">
+          <!-- Game 1: Kingdomino -->
+          <div class="roster-game-card card">
+            <div class="roster-header">
+              <div class="roster-badge mono text-accent">12 Bots Available</div>
+              <h3 class="roster-game-title">Kingdomino Neural Series</h3>
+              <p class="roster-game-desc">
+                2 to 4 player territory expansion. Bots optimize domino drafting, kingdom crown multipliers,
+                and defensive denial tactics.
+              </p>
+            </div>
+
+            <div class="bot-table-wrapper">
+              <table class="bot-table">
+                <thead>
+                  <tr>
+                    <th>Tier / Bot Name</th>
+                    <th>Core Strategy</th>
+                    <th>Inference / Search</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Novice (Greedy)</strong></td>
+                    <td>Immediate crown × territory maximize</td>
+                    <td class="mono">0.05ms (Rust Heuristic)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Apprentice (MCTS-50)</strong></td>
+                    <td>50 rollout simulation horizon</td>
+                    <td class="mono">1.2ms (Pure Rollout)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scholar (Policy Net)</strong></td>
+                    <td>Convolutional policy network prior</td>
+                    <td class="mono">1.6ms (ONNX CPU)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Master (Value + MCTS)</strong></td>
+                    <td>Deep residual value network + 300 rollouts</td>
+                    <td class="mono">3.4ms (Hybrid ONNX)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Grandmaster (Self-Play Ensemble)</strong></td>
+                    <td>Multi-checkpoint consensus + opponent blocking</td>
+                    <td class="mono">5.1ms (Dual ONNX)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="roster-action">
+              <a
+                href="https://arena.eliburgessconsulting.com/kingdomino/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary btn-sm btn-full"
+              >
+                Launch Kingdomino Table ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Game 2: Pinochle -->
+          <div class="roster-game-card card">
+            <div class="roster-header">
+              <div class="roster-badge mono text-purple">5 Bots Available</div>
+              <h3 class="roster-game-title">Partnership Pinochle AI</h3>
+              <p class="roster-game-desc">
+                4-player 48-card trick-taking game. Partners cooperate across the table without table talk,
+                navigating meld declaration and trick-taking voids.
+              </p>
+            </div>
+
+            <div class="bot-table-wrapper">
+              <table class="bot-table">
+                <thead>
+                  <tr>
+                    <th>Tier / Bot Name</th>
+                    <th>Core Strategy</th>
+                    <th>Search Algorithm</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Casual Bidder</strong></td>
+                    <td>Rule-based meld estimation & high trump lead</td>
+                    <td class="mono">Rule Matrix</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Void Tracker</strong></td>
+                    <td>Tracks opponent void suits & partner signals</td>
+                    <td class="mono">State Tracker</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Auction Specialist</strong></td>
+                    <td>Statistical card distribution bidding model</td>
+                    <td class="mono">Bayesian Prior</td>
+                  </tr>
+                  <tr>
+                    <td><strong>IS-MCTS Expert</strong></td>
+                    <td>400 determinizations over unrevealed hands</td>
+                    <td class="mono">IS-MCTS (Rust)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Partnership Maestro</strong></td>
+                    <td>Neural leaf evaluation + partner meld inference</td>
+                    <td class="mono">ONNX + IS-MCTS</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="roster-action">
+              <a
+                href="https://arena.eliburgessconsulting.com/pinochle/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary btn-accent-alt btn-sm btn-full"
+              >
+                Launch Pinochle Table ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conversion Bridge Banner -->
+    <section class="section cta-section">
+      <div class="container">
+        <div class="cta-banner">
+          <div class="eyebrow mono">AI Engineering & Production Inference</div>
+          <h2 class="cta-title">Want custom reinforcement learning, simulation optimization, or low-latency CPU inference deployed on your infrastructure?</h2>
+          <p class="cta-text">
+            Whether you need high-throughput simulation engines, edge AI pipelines that eliminate GPU cloud bills,
+            or resilient WebSocket architectures, I design and deploy production systems tailored to your workload.
+          </p>
+          <div class="cta-actions">
+            <a href="/?tier=advisory#contact" class="btn btn-primary">
+              Consult on AI & Simulation Systems →
+            </a>
+            <a href="https://arena.eliburgessconsulting.com" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              Open Live Arena Lobby ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (function initArenaTelemetry() {
+    var pill = document.getElementById('arena-live-pill');
+    var pillDot = document.getElementById('arena-pill-dot');
+    var pillLabel = document.getElementById('arena-pill-label');
+
+    var kpiPing = document.getElementById('kpi-ping');
+    var kpiStatus = document.getElementById('kpi-status');
+    var kpiStatusSub = document.getElementById('kpi-status-sub');
+    var kpiKingdomino = document.getElementById('kpi-kingdomino-bots');
+    var kpiPinochle = document.getElementById('kpi-pinochle-bots');
+    var kpiTables = document.getElementById('kpi-tables');
+    var kpiTablesSub = document.getElementById('kpi-tables-sub');
+    var kpiPlayers = document.getElementById('kpi-players');
+    var kpiPlayersSub = document.getElementById('kpi-players-sub');
+
+    var apiBase = window.__API_BASE__ || 'https://api.eliburgessconsulting.com';
+    var isPolling = false;
+
+    function fetchArenaStatus() {
+      if (isPolling) return;
+      isPolling = true;
+
+      var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      var timeoutId = null;
+
+      if (controller) {
+        timeoutId = setTimeout(function () {
+          controller.abort();
+        }, 3500); // 3.5s timeout
+      }
+
+      var startTime = Date.now();
+
+      fetch(apiBase + '/api/arena/status', {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+        signal: controller ? controller.signal : undefined,
+      })
+        .then(function (res) {
+          if (timeoutId) clearTimeout(timeoutId);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          var latency = Date.now() - startTime;
+          var isOnline = data && (data.online === true || data.status === 'ok' || data.status === 'online');
+
+          if (pillDot) {
+            pillDot.className = isOnline ? 'status-dot online' : 'status-dot static';
+          }
+          if (pillLabel) {
+            pillLabel.textContent = isOnline ? 'CT 105 Online (' + latency + 'ms)' : 'CT 105 Standby';
+          }
+          if (pill) {
+            pill.setAttribute('title', isOnline ? 'Active on CT 105 via ' + apiBase : 'Standby mode');
+          }
+
+          if (kpiPing) {
+            kpiPing.textContent = latency + 'ms';
+            kpiPing.className = 'kpi-badge mono ' + (isOnline ? 'text-accent-2' : 'text-muted');
+          }
+
+          if (kpiStatus) {
+            kpiStatus.textContent = isOnline ? 'Online' : 'Standby';
+            kpiStatus.className = 'kpi-value mono ' + (isOnline ? 'text-accent-2' : 'text-muted');
+          }
+          if (kpiStatusSub) {
+            kpiStatusSub.textContent = isOnline ? 'CT 105 Arena Cluster Active' : 'Standby / Edge Cache';
+          }
+
+          if (kpiKingdomino && data.kingdomino_bots !== undefined) {
+            kpiKingdomino.textContent = data.kingdomino_bots;
+          }
+          if (kpiPinochle && data.pinochle_bots !== undefined) {
+            kpiPinochle.textContent = data.pinochle_bots;
+          }
+
+          var activeTables = data.active_tables || 0;
+          var playingTables = data.playing_tables || 0;
+          if (kpiTables) {
+            kpiTables.textContent = activeTables;
+          }
+          if (kpiTablesSub) {
+            kpiTablesSub.textContent = playingTables + ' Playing / ' + (activeTables - playingTables) + ' Waiting';
+          }
+
+          var activePlayers = (data.active_players || 0) + (data.spectators || 0);
+          if (kpiPlayers) {
+            kpiPlayers.textContent = activePlayers;
+          }
+          if (kpiPlayersSub) {
+            kpiPlayersSub.textContent = (data.seated_humans || 0) + ' Seated / ' + (data.spectators || 0) + ' Spectators';
+          }
+        })
+        .catch(function () {
+          if (timeoutId) clearTimeout(timeoutId);
+          // Graceful fallback to static homelab spec
+          if (pillDot) pillDot.className = 'status-dot static';
+          if (pillLabel) pillLabel.textContent = 'Standby (Edge)';
+          if (kpiPing) kpiPing.textContent = 'Edge';
+          if (kpiStatus) kpiStatus.textContent = 'Standby';
+          if (kpiStatusSub) kpiStatusSub.textContent = 'Service Standby';
+        })
+        .finally(function () {
+          isPolling = false;
+        });
+    }
+
+    // Initial fetch + 15s interval
+    fetchArenaStatus();
+    setInterval(fetchArenaStatus, 15000);
+  })();
+</script>
+
+<style>
+  .project-showcase {
+    padding-bottom: 4rem;
+  }
+
+  .breadcrumb-container {
+    padding-top: 1.5rem;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .hero-container {
+    display: grid;
+    grid-template-columns: 1.3fr 0.85fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (max-width: 960px) {
+    .hero-container {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  .eyebrow-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-status-pill {
+    font-size: 0.72rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-summary {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-tags {
+    margin-bottom: 2rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.875rem;
+  }
+
+  .btn-accent-alt {
+    background: #8b5cf6;
+    border-color: #8b5cf6;
+    color: #fff;
+  }
+
+  .btn-accent-alt:hover {
+    background: #7c3aed;
+    border-color: #7c3aed;
+    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+    color: #fff;
+  }
+
+  .hero-quick-card {
+    padding: 2rem;
+  }
+
+  .quick-title {
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.5rem;
+  }
+
+  .spec-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.875rem;
+  }
+
+  .spec-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .spec-key {
+    color: var(--muted);
+  }
+
+  .spec-val {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .text-accent { color: var(--accent); }
+  .text-accent-2 { color: var(--accent-2); }
+  .text-purple { color: var(--accent-purple); }
+  .text-muted { color: var(--muted); }
+
+  /* Telemetry Strip */
+  .telemetry-section {
+    background: rgba(17, 24, 39, 0.4);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 0;
+  }
+
+  .telemetry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .telemetry-meta {
+    font-size: 0.75rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 1024px) {
+    .telemetry-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .telemetry-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .kpi-card {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .kpi-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .kpi-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .kpi-badge {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-sm);
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid var(--border);
+  }
+
+  .kpi-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 0.35rem;
+  }
+
+  .kpi-footnote {
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  /* Architecture Deep-Dive */
+  .arch-section {
+    padding: 5rem 0;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 3rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.875rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 0.875rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.0625rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Diagram Card */
+  .diagram-card {
+    padding: 2.5rem 2rem;
+    margin-bottom: 4rem;
+    overflow-x: auto;
+  }
+
+  .diagram-title {
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .diagram-flow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 900px;
+    gap: 0.5rem;
+  }
+
+  .flow-node {
+    flex: 1;
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 180px;
+    justify-content: center;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .flow-node:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+  }
+
+  .flow-node.highlight {
+    background: rgba(56, 189, 248, 0.05);
+    border-color: rgba(56, 189, 248, 0.4);
+  }
+
+  .node-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .node-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .node-tech {
+    font-size: 0.72rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .node-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  .flow-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0.5rem;
+  }
+
+  .arrow-line {
+    width: 32px;
+    height: 2px;
+    background: var(--border-highlight);
+    position: relative;
+  }
+
+  .arrow-line::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -4px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid var(--accent);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+
+  .arrow-tag {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 6px;
+    white-space: nowrap;
+  }
+
+  /* 3 Architecture Pillars */
+  .arch-pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 960px) {
+    .arch-pillars-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .pillar-card {
+    padding: 2rem;
+  }
+
+  .pillar-eyebrow {
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .pillar-heading {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .pillar-p {
+    font-size: 0.9375rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .code-box {
+    background: #060911;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    font-size: 0.75rem;
+    overflow-x: auto;
+    color: #e2e8f0;
+    line-height: 1.45;
+    margin-top: 1.25rem;
+  }
+
+  /* Roster Showcase */
+  .roster-section {
+    padding: 5rem 0;
+    background: rgba(17, 24, 39, 0.4);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .roster-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+
+  @media (max-width: 960px) {
+    .roster-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .roster-game-card {
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .roster-badge {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .roster-game-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .roster-game-desc {
+    font-size: 0.9375rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+
+  .bot-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 1.75rem;
+  }
+
+  .bot-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .bot-table th,
+  .bot-table td {
+    padding: 0.75rem 0.875rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .bot-table th {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .bot-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 5rem 0 3rem;
+  }
+
+  .cta-title {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 1rem;
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-text {
+    font-size: 1.125rem;
+    color: var(--muted);
+    max-width: 720px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .cta-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+</style>
