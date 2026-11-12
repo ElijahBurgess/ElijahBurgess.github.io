@@ -422,20 +422,19 @@ import Eliheadshot from '../assets/Eliheadshot.jpg';
         <div class="cluster-strip-col">
           <div class="cluster-strip-header">
             <div class="status-pill mono" id="valheim-pill" title="CT 101 Dedicated Game Server">
-              <span class="status-dot online" id="valheim-status-dot"></span>
-              <span id="valheim-status-text">Online • CT 101</span>
+              <span class="status-dot loading" id="valheim-status-dot"></span>
+              <span id="valheim-status-text">Checking CT 101…</span>
             </div>
           </div>
           <h4 class="cluster-strip-title">Valheim Dedicated Server Live Telemetry</h4>
           <p class="cluster-strip-desc">
-            <span id="valheim-server-name">Elijah's Realm [Asgard]</span> &bull;
+            <span id="valheim-server-name">Aurora Family Friends [AuroraV1]</span> &bull;
             <span id="valheim-player-count">Checking players...</span> &bull;
             <span id="valheim-uptime">Proxmox Dedicated</span>
           </p>
           <div class="cluster-strip-mods tags" id="valheim-mods">
-            <span class="tag">Valheim Plus</span>
-            <span class="tag">Server Characters</span>
-            <span class="tag">BOD</span>
+            <span class="tag">ValheimBandwidthUnlocker</span>
+            <span class="tag">FuelEternal</span>
           </div>
         </div>
       </div>
@@ -940,11 +939,14 @@ import Eliheadshot from '../assets/Eliheadshot.jpg';
               valheimUptime.textContent = 'Uptime: ' + data.uptime;
             }
             if (valheimMods && Array.isArray(data.active_mods) && data.active_mods.length > 0) {
-              valheimMods.innerHTML = data.active_mods
-                .map(function (mod) {
-                  return '<span class="tag">' + mod + '</span>';
-                })
-                .join(' ');
+              valheimMods.textContent = '';
+              data.active_mods.forEach(function (mod) {
+                var tag = document.createElement('span');
+                tag.className = 'tag';
+                tag.textContent = String(mod);
+                valheimMods.appendChild(tag);
+                valheimMods.appendChild(document.createTextNode(' '));
+              });
             }
           })
           .catch(function () {
@@ -1011,7 +1013,29 @@ import Eliheadshot from '../assets/Eliheadshot.jpg';
         })
           .then(function (res) {
             if (timeoutId) clearTimeout(timeoutId);
-            if (!res.ok) throw new Error('HTTP ' + res.status);
+            if (!res.ok) {
+              // Surface validation (422) / rate-limit (429) errors instead of blaming the tunnel
+              return res
+                .json()
+                .catch(function () {
+                  return {};
+                })
+                .then(function (body) {
+                  var err = new Error('HTTP ' + res.status);
+                  err.status = res.status;
+                  var detail = body && body.detail;
+                  if (Array.isArray(detail)) {
+                    detail = detail
+                      .map(function (d) {
+                        return String((d && d.msg) || '').replace(/^Value error, /, '');
+                      })
+                      .filter(Boolean)
+                      .join(' ');
+                  }
+                  err.detail = typeof detail === 'string' ? detail : '';
+                  throw err;
+                });
+            }
             return res.json();
           })
           .then(function () {
@@ -1024,12 +1048,27 @@ import Eliheadshot from '../assets/Eliheadshot.jpg';
             form.reset();
             if (tierSelect) tierSelect.value = 'Free 15-Min Intro Call';
           })
-          .catch(function () {
+          .catch(function (err) {
             if (timeoutId) clearTimeout(timeoutId);
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalBtnHtml;
             feedback.hidden = false;
             feedback.className = 'form-feedback error';
+            if (err && err.status && err.status >= 400 && err.status < 500) {
+              feedback.textContent = '';
+              var strong = document.createElement('strong');
+              strong.textContent = err.status === 429 ? 'Too many submissions. ' : 'Please check your details. ';
+              feedback.appendChild(strong);
+              feedback.appendChild(
+                document.createTextNode(
+                  err.detail ||
+                    (err.status === 429
+                      ? 'Please wait a few minutes and try again.'
+                      : 'Some fields could not be validated.')
+                )
+              );
+              return;
+            }
             var mailtoLink =
               'mailto:elib@eliburgessconsulting.com?subject=' +
               encodeURIComponent('Inquiry: ' + service_tier) +

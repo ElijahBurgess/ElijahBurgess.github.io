@@ -342,7 +342,8 @@ const structuredData = {
             return res.json();
           })
           .then(function (data) {
-            var isOk = data && (data.status === 'ok' || data.status === 'healthy');
+            var isOk =
+              data && (data.status === 'online' || data.status === 'ok' || data.status === 'healthy');
             pills.forEach(function (pill) {
               var dot = pill.querySelector('.status-dot');
               var label = pill.querySelector('.status-label');
@@ -602,7 +603,15 @@ const structuredData = {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 1.75rem;
+    /* Grid/flex items default to min-width:auto, which lets wide <pre> code blocks
+       stretch cards past the viewport (clipped by html{overflow-x:hidden}) */
+    min-width: 0;
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
   }
 
   .card:hover {

@@ -143,7 +143,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
               <span class="kpi-badge mono text-accent">ONNX</span>
             </div>
             <div class="kpi-value mono" id="kpi-kingdomino-bots">12</div>
-            <div class="kpi-footnote">Models: Heuristics $\rightarrow$ Deep Value Net</div>
+            <div class="kpi-footnote">Models: Heuristics → Deep Value Net</div>
           </div>
 
           <!-- KPI 3 -->
@@ -364,34 +364,34 @@ root_node.simulate_determinizations(possible_hands, budget=400)</code></pre>
                   <tr>
                     <th>Tier / Bot Name</th>
                     <th>Core Strategy</th>
-                    <th>Inference / Search</th>
+                    <th>Glicko-2 / Search</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>Novice (Greedy)</strong></td>
-                    <td>Immediate crown × territory maximize</td>
-                    <td class="mono">0.05ms (Rust Heuristic)</td>
+                    <td><strong>Jester (Random)</strong></td>
+                    <td>Uniform random legal moves — chaos warm-up bot</td>
+                    <td class="mono">~400 • Instant</td>
                   </tr>
                   <tr>
-                    <td><strong>Apprentice (MCTS-50)</strong></td>
-                    <td>50 rollout simulation horizon</td>
-                    <td class="mono">1.2ms (Pure Rollout)</td>
+                    <td><strong>Squire (Heuristic)</strong></td>
+                    <td>Greedy territory + flexibility + safe denial heuristic</td>
+                    <td class="mono">~1000 • Rust Heuristic</td>
                   </tr>
                   <tr>
-                    <td><strong>Scholar (Policy Net)</strong></td>
-                    <td>Convolutional policy network prior</td>
-                    <td class="mono">1.6ms (ONNX CPU)</td>
+                    <td><strong>Knight (Rust MCTS)</strong></td>
+                    <td>400-simulation determinized PUCT search</td>
+                    <td class="mono">~1390 • Rust MCTS</td>
                   </tr>
                   <tr>
-                    <td><strong>Master (Value + MCTS)</strong></td>
-                    <td>Deep residual value network + 300 rollouts</td>
-                    <td class="mono">3.4ms (Hybrid ONNX)</td>
+                    <td><strong>Baron (Neural)</strong></td>
+                    <td>Siamese ResNet trained via league masked PPO (2P, 2–4P &amp; 7×7 variants)</td>
+                    <td class="mono">~1500 • &lt; 2ms ONNX CPU</td>
                   </tr>
                   <tr>
-                    <td><strong>Grandmaster (Self-Play Ensemble)</strong></td>
-                    <td>Multi-checkpoint consensus + opponent blocking</td>
-                    <td class="mono">5.1ms (Dual ONNX)</td>
+                    <td><strong>Grandmaster / Grandmaster Deep</strong></td>
+                    <td>Baron policy + CRN world sampling, 2-ply counter-draft &amp; exact endgame solver</td>
+                    <td class="mono">~1640–1690 • 70–500ms</td>
                   </tr>
                 </tbody>
               </table>
@@ -426,34 +426,34 @@ root_node.simulate_determinizations(possible_hands, budget=400)</code></pre>
                   <tr>
                     <th>Tier / Bot Name</th>
                     <th>Core Strategy</th>
-                    <th>Search Algorithm</th>
+                    <th>Search / Latency</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>Casual Bidder</strong></td>
-                    <td>Rule-based meld estimation & high trump lead</td>
-                    <td class="mono">Rule Matrix</td>
+                    <td><strong>Apprentice</strong></td>
+                    <td>Casual beginner — cautious opener &amp; forgiving trick play</td>
+                    <td class="mono">Rules • &lt; 0.05ms</td>
                   </tr>
                   <tr>
-                    <td><strong>Void Tracker</strong></td>
-                    <td>Tracks opponent void suits & partner signals</td>
-                    <td class="mono">State Tracker</td>
+                    <td><strong>Card Sharp</strong></td>
+                    <td>Club-level heuristic: counts Aces/10s, reads partner signals &amp; tracks voids</td>
+                    <td class="mono">Void Tracker • &lt; 0.25ms</td>
                   </tr>
                   <tr>
-                    <td><strong>Auction Specialist</strong></td>
-                    <td>Statistical card distribution bidding model</td>
-                    <td class="mono">Bayesian Prior</td>
+                    <td><strong>Tactician</strong></td>
+                    <td>Belief-consistent determinizations respecting public melds &amp; suit voids</td>
+                    <td class="mono">IS-MCTS • &lt; 1ms</td>
                   </tr>
                   <tr>
-                    <td><strong>IS-MCTS Expert</strong></td>
-                    <td>400 determinizations over unrevealed hands</td>
-                    <td class="mono">IS-MCTS (Rust)</td>
+                    <td><strong>Master (Neural)</strong></td>
+                    <td>Partnership policy-value net trained on 250k teacher hands + league PPO</td>
+                    <td class="mono">ONNX CPU • &lt; 2ms</td>
                   </tr>
                   <tr>
-                    <td><strong>Partnership Maestro</strong></td>
-                    <td>Neural leaf evaluation + partner meld inference</td>
-                    <td class="mono">ONNX + IS-MCTS</td>
+                    <td><strong>Grandmaster (NN + Search)</strong></td>
+                    <td>Neural policy + 32-world belief search &amp; 4-trick exact endgame solver</td>
+                    <td class="mono">ONNX + Search • ~60–110ms</td>
                   </tr>
                 </tbody>
               </table>
@@ -585,7 +585,8 @@ root_node.simulate_determinizations(possible_hands, budget=400)</code></pre>
             kpiTablesSub.textContent = playingTables + ' Playing / ' + (activeTables - playingTables) + ' Waiting';
           }
 
-          var activePlayers = (data.active_players || 0) + (data.spectators || 0);
+          // `active_players` from CT 105 already = connected humans + spectators
+          var activePlayers = data.active_players || 0;
           if (kpiPlayers) {
             kpiPlayers.textContent = activePlayers;
           }
@@ -607,9 +608,14 @@ root_node.simulate_determinizations(possible_hands, budget=400)</code></pre>
         });
     }
 
-    // Initial fetch + 15s interval
+    // Initial fetch + 15s interval (skipped while the tab is hidden; refreshes on return)
     fetchArenaStatus();
-    setInterval(fetchArenaStatus, 15000);
+    setInterval(function () {
+      if (!document.hidden) fetchArenaStatus();
+    }, 15000);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) fetchArenaStatus();
+    });
   })();
 </script>
 

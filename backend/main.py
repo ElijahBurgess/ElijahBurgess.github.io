@@ -49,6 +49,10 @@ RATE_LIMIT_MAX_REQUESTS = 5
 
 def _check_rate_limit(client_ip: str) -> bool:
     now = time.time()
+    # Opportunistically drop IPs whose whole window has expired so the dict can't grow unbounded
+    if len(_inquiry_rate_limits) > 1000:
+        for ip in [k for k, v in _inquiry_rate_limits.items() if not v or now - v[-1] >= RATE_LIMIT_WINDOW]:
+            _inquiry_rate_limits.pop(ip, None)
     timestamps = _inquiry_rate_limits[client_ip]
     valid_timestamps = [t for t in timestamps if now - t < RATE_LIMIT_WINDOW]
     _inquiry_rate_limits[client_ip] = valid_timestamps
@@ -539,6 +543,12 @@ async def valheim_status():
             resp = await client.get("http://192.168.0.105:8088/api/status")
             if resp.status_code == 200:
                 data = resp.json()
+                # Never advertise access-control details (e.g. a "NoServerPassword" mod) publicly
+                mods = [
+                    str(m)
+                    for m in (data.get("active_mods") or [])
+                    if "password" not in str(m).lower()
+                ]
                 return {
                     "online": True,
                     "status": data.get("status", "Online"),
@@ -546,7 +556,7 @@ async def valheim_status():
                     "world": data.get("world", ""),
                     "server_name": data.get("server_name", ""),
                     "uptime": data.get("uptime", ""),
-                    "active_mods": data.get("active_mods", []),
+                    "active_mods": mods,
                 }
     except Exception:
         pass

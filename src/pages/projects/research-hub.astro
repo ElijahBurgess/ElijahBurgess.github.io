@@ -349,6 +349,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     var statusBlast = document.getElementById('status-blast');
 
     var apiBase = window.__API_BASE__ || 'https://api.eliburgessconsulting.com';
+
+    // "bioinformatics.stackexchange.com_en_all_2026-10.zim" -> "Bioinformatics StackExchange"
+    function prettyZimName(raw) {
+      var base = String(raw).replace(/\.zim$/i, '').replace(/_[a-z]{2}_all(_\d{4}-\d{2})?$/i, '');
+      var m = base.match(/^([a-z0-9-]+)\.stackexchange\.com$/i);
+      if (m) {
+        var site = m[1] === 'stats' ? 'CrossValidated Stats' : m[1].charAt(0).toUpperCase() + m[1].slice(1);
+        return site + ' StackExchange';
+      }
+      return base.replace(/[_-]+/g, ' ');
+    }
     var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
     var signal = controller ? controller.signal : undefined;
     var timeoutId = null;
@@ -410,7 +421,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           data.zim_archives.forEach(function (name) {
             var badge = document.createElement('span');
             badge.className = 'zim-badge';
-            badge.innerHTML = '<span class="badge-dot"></span>' + name;
+            badge.title = String(name);
+            var dot = document.createElement('span');
+            dot.className = 'badge-dot';
+            badge.appendChild(dot);
+            badge.appendChild(document.createTextNode(prettyZimName(name)));
             zimContainer.appendChild(badge);
           });
         }
@@ -611,12 +626,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .subpanel-col {
+    min-width: 0;
   }
 
   .zim-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     font-size: 0.75rem;
     padding: 0.3rem 0.65rem;
     border-radius: var(--radius-sm);
