@@ -43,14 +43,15 @@ export interface BioAchievement {
 export const siteMeta = {
   name: 'Elijah Burgess',
   shortName: 'Eli Burgess',
-  brand: 'Elijah Burgess — Applied AI & Systems Engineering',
+  brand: 'Elijah Burgess Consulting',
   siteUrl: 'https://www.eliburgessconsulting.com',
   email: 'elib@eliburgessconsulting.com',
+  linkedin: 'https://www.linkedin.com/in/elijah-burgess',
   github: 'https://github.com/ElijahBurgess',
-  location: 'Madison, WI · Remote / Hybrid',
-  defaultTitle: 'Elijah Burgess — Applied AI Engineer, Multi-Agent Systems & Consulting',
+  location: 'Madison, WI · Remote Nationwide',
+  defaultTitle: 'Elijah Burgess — AI Consulting, Workflow Automation & 1-on-1 Coaching',
   defaultDescription:
-    'Applied AI and software engineer building multi-agent orchestration pipelines, local-first MCP retrieval infrastructure, and workflow automation in Madison, WI and remotely.',
+    'Practical AI consulting, custom workflow automation, and 1-on-1 AI training and coaching for businesses and individuals in Madison, WI and remotely.',
 };
 
 export const navItems: NavItem[] = [
@@ -69,34 +70,37 @@ export const heroContent: {
   secondaryCta: { label: string; href: string };
   pillars: HeroPillar[];
 } = {
-  roleTitle: 'Applied AI & Multi-Agent Systems Engineer',
-  availability: 'Open to AI-Focused Roles & Select Consulting',
-  location: 'Madison, WI · Remote / Hybrid',
+  roleTitle: 'AI & Workflow Consultant · Systems Builder',
+  availability: 'Taking Business & Individual Clients',
+  location: 'Madison, WI · Serving Clients Remotely & Locally',
   headline:
-    'Building production AI agents, local-first retrieval systems, and practical automation.',
+    'Practical AI consulting, custom automation, and hands-on workflow training.',
   subhead:
-    'I design and ship multi-agent LLM pipelines, fast MCP knowledge servers, and full-stack software in Python, Rust, and TypeScript. Actively seeking AI-leaning engineering, applied AI, and forward-deployed solutions roles.',
+    'I partner with businesses, teams, and individuals to pinpoint where manual workflows break down—then build governed AI tools, clean automations, and durable habits that save hours every week without SaaS bloat.',
   primaryCta: {
-    label: 'Hire / Get in Touch',
+    label: 'Book a Consult',
     href: '#contact',
-    tier: 'AI Role / Hiring',
+    tier: 'Business AI Consulting',
   },
-  secondaryCta: { label: 'View Live AI Systems', href: '#projects' },
+  secondaryCta: { label: 'Explore Live AI Projects', href: '#projects' },
   pillars: [
     {
-      label: 'Agentic Architecture',
-      title: 'Multi-Model & MCP Tooling',
-      detail: 'Tiered LLM orchestration, FastMCP servers, browser agents & quota guardrails.',
+      label: 'For Businesses & Teams',
+      title: 'Custom AI & Ops Automation',
+      detail:
+        'Replace spreadsheet bottlenecks and repetitive admin with reliable Python, API, and governed LLM pipelines.',
     },
     {
-      label: 'Production Stack',
-      title: 'Python · Rust · TypeScript',
-      detail: 'FastAPI, React, Tauri v2, PyO3, ONNX, DuckDB, SQLite WAL & Linux infra.',
+      label: 'For Individuals',
+      title: '1-on-1 AI Setup & Coaching',
+      detail:
+        'Adopt modern AI agents, set up private workflows around your real tasks, and build consistent execution.',
     },
     {
-      label: 'Role Focus',
-      title: 'Applied AI & Solutions',
-      detail: 'AI Engineer, Agentic Workflow Engineer & Forward-Deployed / Technical Roles.',
+      label: 'How I Build',
+      title: 'Governed, Practical & Owned',
+      detail:
+        'Human-in-the-loop guardrails, clear documentation, and full handoff—no vendor hype or lock-in.',
     },
   ],
 };
@@ -107,7 +111,7 @@ export const projectsContent: {
   items: ProjectEntry[];
 } = {
   sectionLabel: '01 / AI Projects',
-  heading: 'Shipped AI systems & live software',
+  heading: 'Live systems & shipped software',
   items: [
     {
       slug: 'boredgamer-arena',
@@ -125,7 +129,7 @@ export const projectsContent: {
       slug: 'deal-hunter',
       title: 'Automated Deal Hunter',
       summary:
-        'Continuous hardware arbitrage valuation pipeline with spec normalization, rolling P20 price ceilings in SQLite WAL, and an interactive FastAPI deal explorer.',
+        'Dockerized OAuth 2.0 eBay valuation pipeline with hardware-compatibility rules, rolling price ceilings in SQLite WAL, and an interactive FastAPI explorer.',
       stack: ['Python', 'SQLite WAL', 'FastAPI'],
       href: '/projects/deal-hunter',
       liveUrl: '/projects/deal-hunter#explorer',
@@ -147,7 +151,7 @@ export const projectsContent: {
       slug: 'coaching-payment-tracker',
       title: 'Operations & Billing Sync',
       summary:
-        'Automated workflow daemon syncing Google Calendar events to Square invoices, webhook state reconciliation, and real-time client ledgers.',
+        'Automated business operations daemon syncing Google Calendar client sessions directly to Square invoices, webhook reconciliation, and live ledgers.',
       stack: ['Python', 'Square API', 'Webhooks'],
       href: '/projects/coaching-payment-tracker',
       featured: false,
@@ -172,46 +176,46 @@ export const servicesContent: {
   heading: string;
   items: ServiceEntry[];
 } = {
-  sectionLabel: '02 / Consulting & Coaching',
-  heading: 'Available for contract builds, team advisory & coaching',
+  sectionLabel: '02 / Services',
+  heading: 'AI consulting & coaching for businesses and individuals',
   items: [
     {
       id: 'consulting',
-      tierValue: 'AI & Workflow Consulting',
-      title: 'AI & Workflow Engineering',
-      audience: 'For startups & operators',
+      tierValue: 'Business AI Consulting',
+      title: 'Business AI & Automation',
+      audience: 'For small businesses, nonprofits & teams',
       summary:
-        'Custom multi-agent pipelines, private MCP integrations, and internal automations that eliminate manual admin without SaaS lock-in.',
+        'Hands-on workflow audits followed by custom automations, API integrations, and governed AI tools that cut hours of manual admin.',
       outcomes: [
-        'LLM & multi-agent pipeline builds',
-        'Private search, data & API automation',
-        'Clean code & full ownership handoff',
+        'Billing, scheduling & document automation',
+        'Governed AI extraction & QA pipelines',
+        'Full code, SOPs & team training handoff',
       ],
     },
     {
       id: 'advisory',
-      tierValue: 'AI Training & Advisory',
-      title: 'Agentic Workflow Training',
-      audience: 'For teams & builders',
+      tierValue: 'Individual AI Training',
+      title: 'Personal AI Setup & Training',
+      audience: 'For individuals, founders & researchers',
       summary:
-        'Hands-on pair-building and architecture scoping to help teams adopt modern coding agents, local toolchains, and reliable eval loops.',
+        '1-on-1 pair-building to set up modern AI agents, custom dashboards, and private local or cloud workflows tailored to your daily work.',
       outcomes: [
-        'Live pair-building on production repos',
-        'Multi-agent & MCP workflow design',
-        'Pragmatic build-vs-buy scoping',
+        'Live pair-building on your actual tasks',
+        'Claude, Gemini & agentic workflow setup',
+        'Practical tools you own without bloat',
       ],
     },
     {
       id: 'coaching',
       tierValue: '1-on-1 Coaching',
       title: '1-on-1 Execution Coaching',
-      audience: 'For engineers & founders',
+      audience: 'For professionals, builders & leaders',
       summary:
-        'Structured sessions combining Motivational Interviewing with practical workflow design to break bottlenecks and sustain deep focus.',
+        'Focused 1-on-1 coaching combining Motivational Interviewing with structured workflow design to clear bottlenecks and sustain momentum.',
       outcomes: [
-        'Focused 8- or 16-session roadmaps',
-        'Sustainable execution & focus systems',
-        'Tools tailored to how you actually work',
+        'Structured 8- or 16-session roadmaps',
+        'Durable focus, planning & execution habits',
+        'Tools designed for long-term self-reliance',
       ],
     },
   ],
@@ -228,80 +232,80 @@ export const bioContent: {
   achievementsTitle: string;
   achievements: BioAchievement[];
 } = {
-  sectionLabel: '03 / Bio & Achievements',
-  heading: 'AI engineering backed by human-systems fluency',
-  bioBoxLabel: 'Background',
-  bioBoxTitle: 'Engineering & human systems',
+  sectionLabel: '03 / Bio & Track Record',
+  heading: 'Software delivery grounded in real-world operations',
+  bioBoxLabel: 'About Eli',
+  bioBoxTitle: 'AI builder, operator & coach',
   paragraph:
-    'I’m Eli Burgess, an applied AI and software engineer in Madison, Wisconsin focused on multi-agent orchestration, fast local retrieval infrastructure, reinforcement learning engines, and practical workflow automation on Linux. Alongside hands-on engineering, I hold an M.S. in Management & Leadership, am completing my MSW at UW–Madison, and bring 3,000+ hours of 1-on-1 client and executive coaching—making me equally comfortable debugging Rust/Python systems and partnering directly with stakeholders to ship software people actually adopt.',
+    'I’m Eli Burgess, an independent AI consultant, software builder, and coach based in Madison, Wisconsin. Over seven years running my own practice alongside custom engineering, I’ve specialized in sitting down with business owners, researchers, and individuals to find where manual workflows break down—and building governed Python, React, Rust, and AI tools that fix the bottleneck. I hold an M.S. in Management & Leadership (WGU) and serve as Board Co-Treasurer for a Madison nonprofit.',
   facts: [
     {
-      label: 'Languages & Frameworks',
-      value: 'Python, Rust (PyO3), TypeScript, React, FastAPI, Tauri v2',
+      label: 'Engineering Stack',
+      value: 'Python, TypeScript, React, Rust (Tauri / PyO3), SQL, FastAPI, Linux',
     },
     {
-      label: 'AI & Data Systems',
-      value: 'Multi-Agent LLMs, MCP, ONNX RL, DuckDB, Zoekt, SQLite',
+      label: 'AI & Governance',
+      value: 'Claude, Gemini, FastMCP, Maker-Checker QA & Human-in-the-Loop',
     },
     {
-      label: 'Education',
-      value: 'M.S. Management & Leadership · MSW Candidate (UW–Madison)',
+      label: 'Leadership & Education',
+      value: 'M.S. Management & Leadership (WGU) · ADKAR Change Adoption',
     },
     {
-      label: 'Work & Location',
-      value: 'Madison, WI · Open to Remote & Hybrid AI Roles',
+      label: 'Client Track Record',
+      value: '7+ years · 150+ clients coached & trained across 15+ countries',
     },
   ],
-  achievementsLabel: 'Current Work',
-  achievementsTitle: 'Selected AI & software achievements',
+  achievementsLabel: 'Recent Builds',
+  achievementsTitle: 'Selected AI & software highlights',
   achievements: [
     {
-      title: 'Tiered Multi-Agent Orchestration',
+      title: 'FinDash & Maker-Checker AI Auditing',
       detail:
-        'Built two-tier agent pipelines routing frontier reasoning models to fast coding/Playwright browser workers with automated PreToolUse model-quota guardrails.',
+        'Built an 8-endpoint Plaid financial analytics suite paired with segregated Maker-Checker AI verification to audit contract and fee-waiver terms.',
     },
     {
-      title: 'Sub-10ms Local MCP Knowledge Hub',
+      title: 'Research Lab QA & Sub-10ms MCP Hub',
       detail:
-        'Engineered a FastMCP server uniting 65 Zoekt code shards (59 repos), offline docs, 80K+ DuckDB BM25 arXiv preprints, and BLAST+ genomics.',
+        'Shipped automated viral genomics QA + PCRDash for a UW–Madison researcher, plus a FastMCP server indexing 59 code repos and 80K+ arXiv papers.',
     },
     {
       title: 'Rust + ONNX Reinforcement Learning',
       detail:
-        'Built zero-copy Rust game simulations, self-play RL pipelines, and ONNX CPU inference bots deployed live at arena.eliburgessconsulting.com.',
+        'Engineered zero-copy Rust game engines, self-play RL pipelines, and ONNX neural bots serving live multiplayer games at arena.eliburgessconsulting.com.',
     },
     {
-      title: 'Automated Valuation & LLM Curation',
+      title: 'Zero-Trust Agent Cluster & DashManager',
       detail:
-        'Shipped continuous eBay hardware arbitrage scoring (SQLite WAL + FastAPI) and a 4-stage LLM structured-depth technical discovery funnel.',
+        'Architected a firewall-isolated 24/7 Proxmox/OPNsense AI agent cluster monitored by a lightweight 25 MB Rust/Tauri desktop command deck.',
     },
     {
-      title: 'End-to-End Product & Leadership Execution',
+      title: 'Published Mobile, Web & Ops Software',
       detail:
-        'Shipped a 25 MB Tauri v2 desktop hub, self-hosted Proxmox/Cloudflare services, a Google Play Android app, and 3,000+ hours of 1-on-1 coaching.',
+        'Shipped Google Play (Kotlin) and Chrome Web Store apps (NightMap, TouchGuard), adaptive eBay valuation, and automated Calendar-to-Square billing.',
     },
   ],
 };
 
 export const contactContent = {
-  sectionLabel: '04 / Hire & Contact',
-  heading: 'Hiring for an AI-leaning role—or scoping a project?',
+  sectionLabel: '04 / Contact',
+  heading: 'Tell me what you want to automate or build',
   subhead:
-    'Reach out about full-time or contract AI engineering, applied AI, and technical solutions roles, or send a consulting/coaching note. I reply within one business day.',
+    'Whether you want to eliminate manual admin in your business or get 1-on-1 help adopting AI workflows for yourself, send a short note. I read every inquiry personally and reply within one business day.',
   roleHighlights: [
     {
-      label: 'Target Roles',
-      value: 'Applied AI Engineer · Multi-Agent / Workflow Engineer · Forward-Deployed / Solutions',
+      label: 'Who I Work With',
+      value: 'Small & Midsize Businesses · Nonprofits · Research Teams · Individuals',
     },
     {
-      label: 'Availability',
-      value: 'Full-Time, Contract & Select Consulting · Madison, WI or Remote',
+      label: 'Engagement Formats',
+      value: 'Custom Workflow Builds · AI Readiness Audits · 1-on-1 Training & Coaching',
     },
   ],
   topics: [
-    'AI Role / Hiring',
-    'AI & Workflow Consulting',
-    'AI Training & Advisory',
+    'Business AI Consulting',
+    'Individual AI Training',
     '1-on-1 Coaching',
+    'General Inquiry',
   ],
 };

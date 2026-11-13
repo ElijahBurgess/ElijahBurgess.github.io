@@ -38,7 +38,7 @@ const structuredData = {
       name: siteMeta.name,
       url: siteMeta.siteUrl,
       image: `${siteMeta.siteUrl}/images/Eliheadshot.jpg`,
-      jobTitle: 'Applied AI & Multi-Agent Systems Engineer',
+      jobTitle: 'AI & Workflow Consultant, Systems Builder & Coach',
       worksFor: {
         '@type': 'Organization',
         name: 'Burgess Meditation LLC',
@@ -49,7 +49,7 @@ const structuredData = {
         addressRegion: 'WI',
         addressCountry: 'US',
       },
-      sameAs: [siteMeta.github],
+      sameAs: [siteMeta.linkedin, siteMeta.github],
     },
     {
       '@type': 'ProfessionalService',
@@ -138,9 +138,9 @@ const structuredData = {
           <a
             href="/#contact"
             class="btn btn-primary btn-sm"
-            data-select-tier="AI Role / Hiring"
+            data-select-tier="Business AI Consulting"
           >
-            Hire / Contact
+            Book a Consult
           </a>
         </nav>
       </div>
@@ -157,6 +157,7 @@ const structuredData = {
         </p>
         <div class="footer-links">
           <a href={`mailto:${siteMeta.email}`} class="footer-link">{siteMeta.email}</a>
+          <a href={siteMeta.linkedin} target="_blank" rel="noopener noreferrer" class="footer-link">LinkedIn ↗</a>
           <a href={siteMeta.github} target="_blank" rel="noopener noreferrer" class="footer-link">GitHub ↗</a>
         </div>
       </div>
@@ -242,6 +243,7 @@ const structuredData = {
   .footer-link {
     color: var(--text-secondary);
     transition: color 140ms ease;
+    white-space: nowrap;
   }
 
   .footer-link:hover {

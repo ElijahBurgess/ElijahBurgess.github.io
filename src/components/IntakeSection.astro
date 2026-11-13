@@ -30,16 +30,27 @@ import { contactContent, siteMeta } from '../data/site-content';
               {siteMeta.email}
             </a>
           </div>
-          <div class="direct-contact-item">
-            <span class="direct-label mono">GitHub</span>
-            <a
-              href={siteMeta.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-link direct-link"
-            >
-              github.com/ElijahBurgess ↗
-            </a>
+          <div class="direct-contact-links">
+            <span class="direct-label mono">Profiles</span>
+            <div class="social-links-row">
+              <a
+                href={siteMeta.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-link direct-link"
+              >
+                LinkedIn ↗
+              </a>
+              <span class="link-sep" aria-hidden="true">·</span>
+              <a
+                href={siteMeta.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-link direct-link"
+              >
+                GitHub ↗
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -119,7 +130,7 @@ import { contactContent, siteMeta } from '../data/site-content';
               rows="4"
               required
               maxlength="5000"
-              placeholder="Share details on an AI-focused role, contract scope, or coaching inquiry..."
+              placeholder="Briefly describe the workflow bottleneck, AI setup, or coaching goal you want to tackle..."
               class="form-textarea"
             ></textarea>
           </div>
@@ -210,10 +221,21 @@ import { contactContent, siteMeta } from '../data/site-content';
     gap: 0.75rem 1.25rem;
   }
 
-  .direct-contact-item {
+  .direct-contact-item,
+  .direct-contact-links {
     display: flex;
     flex-direction: column;
     gap: 0.28rem;
+  }
+
+  .social-links-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .link-sep {
+    color: var(--text-muted);
   }
 
   .direct-label {
@@ -433,21 +455,28 @@ import { contactContent, siteMeta } from '../data/site-content';
       const direct = allTopics.find((t) => t.toLowerCase() === clean);
       if (direct) return direct;
 
-      if (clean.includes('hir') || clean.includes('role') || clean.includes('job')) {
-        return allTopics.find((t) => t.toLowerCase().includes('hiring')) || null;
-      }
-      if (clean === 'consulting' || clean.includes('consult')) {
+      if (clean === 'consulting' || clean.includes('consult') || clean.includes('business')) {
         return allTopics.find((t) => t.toLowerCase().includes('consulting')) || null;
       }
       if (clean === 'coaching' || clean.includes('coach')) {
         return allTopics.find((t) => t.toLowerCase().includes('coaching')) || null;
       }
-      if (clean === 'advisory' || clean.includes('advis') || clean.includes('train')) {
+      if (
+        clean === 'advisory' ||
+        clean.includes('advis') ||
+        clean.includes('train') ||
+        clean.includes('individual')
+      ) {
         return (
           allTopics.find(
-            (t) => t.toLowerCase().includes('advisory') || t.toLowerCase().includes('training')
+            (t) =>
+              t.toLowerCase().includes('training') ||
+              t.toLowerCase().includes('individual')
           ) || null
         );
+      }
+      if (clean.includes('general')) {
+        return allTopics.find((t) => t.toLowerCase().includes('general')) || null;
       }
 
       return (
@@ -552,8 +581,8 @@ import { contactContent, siteMeta } from '../data/site-content';
       const formData = new FormData(form);
       const currentChips = getTopicChips();
       const defaultTier = currentChips.length
-        ? currentChips[0].getAttribute('data-topic') || 'AI Role / Hiring'
-        : 'AI Role / Hiring';
+        ? currentChips[0].getAttribute('data-topic') || 'Business AI Consulting'
+        : 'Business AI Consulting';
 
       const payload = {
         name: String(formData.get('name') || '').trim(),

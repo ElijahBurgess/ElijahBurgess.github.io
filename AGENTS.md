@@ -24,11 +24,11 @@
 1. **Single Source of Homepage Copy (`<= 450` words):**
    - All homepage headlines, project summaries, service descriptions, and bio copy live in [`src/data/site-content.ts`](file:///home/elib_fedora/Antigravity/Dashmanager/Website/src/data/site-content.ts).
    - `.astro` homepage components (`Hero`, `ProjectsGrid`, `ServicesLedger`, `BioSection`, `IntakeSection`) MUST NOT contain hardcoded marketing prose.
-2. **Crisp Bordered Surface Hierarchy (`v2.1`):**
+2. **Crisp Bordered Surface Hierarchy (`v2.2` — AI Consulting Focus):**
    - **Design Tokens:** Defined in [`src/styles/tokens.css`](file:///home/elib_fedora/Antigravity/Dashmanager/Website/src/styles/tokens.css) (`--bg-canvas: #080b10`, `--bg-panel: #0e131d`, `--bg-elevated: #131a27`, `--border-hairline: rgba(255, 255, 255, 0.16)`).
-   - **Hero (`Hero.astro`):** Compact top avatar (`Eliheadshot.jpg`, `loading="eager"`), AI-hiring availability pill, and 3 bordered capability pillar boxes.
-   - **Elevated Showcase Surfaces (`--bg-elevated`)** are used for `#projects` (`ProjectsGrid.astro`) and the `#contact` form (`IntakeSection.astro`, defaulting to `AI Role / Hiring`), while text sections (`#services`, `#bio`, `#contact` role highlights) use crisp `1px` bordered `--bg-panel` boxes so no section ever reads like an unstructured wall of text.
-   - **`#bio` (`BioSection.astro`)** uses a 2-panel bordered split: **1 concise paragraph** + stack/education cells on the left, and **5 bulleted current AI & software achievements** on the right.
+   - **Hero (`Hero.astro`):** Zoomed-in top portrait (`Eliheadshot-avatar.jpg`, `loading="eager"`), consulting client availability pill, LinkedIn + GitHub social links, and 3 bordered value boxes for businesses & individuals.
+   - **Elevated Showcase Surfaces (`--bg-elevated`)** are used for `#projects` (`ProjectsGrid.astro`) and the `#contact` form (`IntakeSection.astro`, defaulting to `Business AI Consulting`), while text sections (`#services`, `#bio`, `#contact` engagement info) use crisp `1px` bordered `--bg-panel` boxes so no section ever reads like an unstructured wall of text.
+   - **`#bio` (`BioSection.astro`)** uses a 2-panel bordered split: **1 concise paragraph** + stack/education cells on the left, and **5 bulleted current AI & software highlights** on the right.
    - **Project Subpages (`src/pages/projects/*.astro`)** inherit [`src/layouts/ProjectLayout.astro`](file:///home/elib_fedora/Antigravity/Dashmanager/Website/src/layouts/ProjectLayout.astro) (`<= 250` words of bordered architectural prose + interactive explorer/launchers).
 3. **Untouchable Production Routes:**
    - `/toddler-touch-screen-lock-privacy/` (`public/toddler-touch-screen-lock-privacy/index.html`) — required for Google Play Store compliance (`com.burgessmeditation.touchguard`). Never rename or remove.
