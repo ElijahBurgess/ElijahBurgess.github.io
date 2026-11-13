@@ -1,0 +1,141 @@
+---
+import { servicesContent } from '../data/site-content';
+---
+
+<section id="services" class="section-rule" aria-labelledby="services-heading">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-index">{servicesContent.sectionLabel}</span>
+      <h2 id="services-heading" class="section-title">{servicesContent.heading}</h2>
+    </div>
+
+    <div class="services-ledger">
+      {servicesContent.items.map((item) => (
+        <article class="ledger-column">
+          <p class="ledger-audience mono">{item.audience}</p>
+          <h3 class="ledger-title">{item.title}</h3>
+          <p class="ledger-summary">{item.summary}</p>
+
+          <ul class="ledger-outcomes">
+            {item.outcomes.map((outcome) => (
+              <li>{outcome}</li>
+            ))}
+          </ul>
+
+          <div class="ledger-action">
+            <a
+              href="#contact"
+              class="service-select-link text-link"
+              data-select-tier={item.tierValue}
+            >
+              Inquire about {item.title} →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services-ledger {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--border-hairline);
+    border-bottom: 1px solid var(--border-hairline);
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .ledger-column {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 1.75rem 1.5rem;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .ledger-column:first-child {
+    padding-left: 0;
+  }
+
+  .ledger-column:last-child {
+    padding-right: 0;
+  }
+
+  .ledger-column + .ledger-column {
+    border-left: 1px solid var(--border-hairline);
+  }
+
+  @media (max-width: 859px) {
+    .services-ledger {
+      grid-template-columns: 1fr;
+    }
+
+    .ledger-column,
+    .ledger-column:first-child,
+    .ledger-column:last-child {
+      padding: 1.65rem 0;
+    }
+
+    .ledger-column + .ledger-column {
+      border-left: none;
+      border-top: 1px solid var(--border-hairline);
+    }
+  }
+
+  .ledger-audience {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+  }
+
+  .ledger-title {
+    font-size: 1.2rem;
+    margin: 0.45rem 0 0.75rem;
+  }
+
+  .ledger-summary {
+    font-size: 0.94rem;
+    line-height: 1.62;
+    color: var(--text-secondary);
+  }
+
+  .ledger-outcomes {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .ledger-outcomes li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    font-size: 0.88rem;
+    line-height: 1.48;
+    color: var(--text-primary);
+  }
+
+  .ledger-outcomes li::before {
+    content: '—';
+    font-family: var(--font-mono);
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .ledger-action {
+    margin-top: auto;
+  }
+
+  .service-select-link {
+    font-size: 0.88rem;
+    color: var(--text-primary);
+  }
+
+  .service-select-link:hover {
+    color: var(--accent);
+  }
+</style>

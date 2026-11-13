@@ -1,0 +1,241 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+  category: string;
+  summary: string;
+  stack: string[];
+  liveUrl?: string;
+  liveLabel?: string;
+  secondaryUrl?: string;
+  secondaryLabel?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalPath,
+  category,
+  summary,
+  stack,
+  liveUrl,
+  liveLabel = 'Open Live App ↗',
+  secondaryUrl,
+  secondaryLabel,
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description} canonicalPath={canonicalPath}>
+  <article class="project-shell">
+    <header class="project-hero">
+      <div class="container">
+        <a href="/#projects" class="back-link mono">← All Projects</a>
+        <p class="project-category mono">{category}</p>
+        <h1 class="project-title">{title}</h1>
+        <p class="project-summary">{summary}</p>
+
+        <div class="project-meta-bar">
+          <ul class="stack-list mono" aria-label="Technology Stack">
+            {stack.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+
+          {(liveUrl || secondaryUrl) && (
+            <div class="project-actions">
+              {liveUrl && (
+                <a
+                  href={liveUrl}
+                  class="btn btn-primary btn-sm"
+                  target={liveUrl.startsWith('http') ? '_blank' : undefined}
+                  rel={liveUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
+                >
+                  {liveLabel}
+                </a>
+              )}
+              {secondaryUrl && secondaryLabel && (
+                <a
+                  href={secondaryUrl}
+                  class="btn btn-ghost btn-sm"
+                  target={secondaryUrl.startsWith('http') ? '_blank' : undefined}
+                  rel={secondaryUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
+                >
+                  {secondaryLabel}
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <div class="container project-body">
+      <slot />
+    </div>
+
+    <section class="project-next">
+      <div class="container project-next-inner">
+        <a href="/#projects" class="text-link">← Back to AI Projects</a>
+        <a href="/#contact" class="btn btn-ghost btn-sm">Discuss a Similar Build →</a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .project-hero {
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    transition: color 140ms ease;
+  }
+
+  .back-link:hover {
+    color: var(--text-primary);
+  }
+
+  .project-category {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 0.65rem;
+  }
+
+  .project-title {
+    font-size: clamp(1.85rem, 4vw, 2.75rem);
+    max-width: 24ch;
+    margin-bottom: 1rem;
+  }
+
+  .project-summary {
+    font-size: clamp(1.02rem, 1.5vw, 1.15rem);
+    color: var(--text-secondary);
+    max-width: 62ch;
+    margin-bottom: 1.75rem;
+  }
+
+  .project-meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .stack-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .stack-list li::before {
+    content: '· ';
+    color: var(--border-strong);
+  }
+
+  .stack-list li:first-child::before {
+    content: '';
+  }
+
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .project-body {
+    padding-block: clamp(2.75rem, 5vw, 4.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 4.5vw, 3.5rem);
+  }
+
+  .project-body :global(.spec-grid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    border-top: 1px solid var(--border-hairline);
+    border-left: 1px solid var(--border-hairline);
+  }
+
+  .project-body :global(.spec-cell) {
+    padding: 1.35rem 1.5rem;
+    border-right: 1px solid var(--border-hairline);
+    border-bottom: 1px solid var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .project-body :global(.spec-label) {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .project-body :global(.spec-title) {
+    font-size: 1.02rem;
+    font-weight: 620;
+    color: var(--text-primary);
+  }
+
+  .project-body :global(.spec-text) {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+  }
+
+  .project-body :global(.prose-block) {
+    max-width: 66ch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .project-body :global(.prose-block h2) {
+    font-size: 1.35rem;
+  }
+
+  .project-body :global(.prose-block p) {
+    color: var(--text-secondary);
+    font-size: 0.98rem;
+  }
+
+  .project-body :global(.studio-panel) {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    padding: clamp(1.25rem, 3vw, 1.85rem);
+  }
+
+  .project-next {
+    border-top: 1px solid var(--border-hairline);
+    padding-block: 2.25rem;
+  }
+
+  .project-next-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+</style>

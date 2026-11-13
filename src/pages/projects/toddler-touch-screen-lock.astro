@@ -1,1621 +1,618 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
 ---
 
-<BaseLayout
-  title="Toddler Touch Screen Lock | Privacy-First Android Utility by Elijah Burgess"
-  description="A 100% offline, zero-telemetry Android utility that locks touch inputs during video playback so toddlers can watch without accidental taps, hung-up calls, or changed settings."
+<ProjectLayout
+  title="Toddler Touch Screen Lock"
+  description="Offline Android utility using TYPE_ACCESSIBILITY_OVERLAY and hardware volume-key sequences to block accidental screen taps during video playback or calls."
   canonicalPath="/projects/toddler-touch-screen-lock"
+  category="Android Utility · Burgess Meditation LLC"
+  summary="Published, 100% offline Android app that absorbs stray screen touches during cartoons or family video calls, unlocked via a physical volume-button cadence or USB-C power failsafe."
+  stack={['Kotlin', 'Android SDK', 'TYPE_ACCESSIBILITY_OVERLAY', 'Google Play']}
+  liveUrl="https://play.google.com/store/apps/details?id=com.burgessmeditation.touchguard"
+  liveLabel="Get on Google Play ↗"
+  secondaryUrl="/toddler-touch-screen-lock-privacy/"
+  secondaryLabel="Privacy Policy"
 >
-  <div class="project-showcase">
-    <!-- Breadcrumb -->
-    <div class="container breadcrumb-container">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a>
-        <span class="breadcrumb-sep">/</span>
-        <a href="/#projects">Projects</a>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Toddler Touch Screen Lock</span>
-      </nav>
+  <!-- Interactive Hardware Unlock Walkthrough & Tester -->
+  <section class="studio-panel simulator-panel" aria-labelledby="unlock-heading">
+    <div class="panel-top">
+      <div>
+        <span class="spec-label">Hardware Unlock Walkthrough</span>
+        <h2 id="unlock-heading" class="panel-title">Volume Cadence &amp; USB-C Failsafe Tester</h2>
+      </div>
+      <span class="state-badge mono" id="overlay-state-badge">Overlay: LOCKED</span>
     </div>
 
-    <!-- Hero Header -->
-    <section class="section hero-section">
-      <div class="container hero-container">
-        <div class="hero-content">
-          <div class="eyebrow mono">
-            <span class="status-dot online"></span>
-            Production Android Utility // Burgess Meditation LLC
-          </div>
-          <h1 class="hero-title">Toddler Touch Screen Lock</h1>
-          <p class="hero-summary">
-            Hand your phone to a toddler playing cartoons or a family video call without accidental hang-ups,
-            stray settings toggles, or emergency texts. Engineered with zero network permissions, an impenetrable
-            hardware-key unlock combo, and mathematical privacy guarantees enforced by the Android OS.
-          </p>
+    <div class="sim-grid">
+      <!-- Simulated Device Viewport -->
+      <div class="device-frame" id="sim-device">
+        <div class="device-header mono">
+          <span id="sim-clock">10:42</span>
+          <span>com.burgessmeditation.touchguard</span>
+        </div>
 
-          <div class="tags hero-tags">
-            <span class="tag mono">com.burgessmeditation.touchguard</span>
-            <span class="tag mono">Burgess Meditation LLC</span>
-            <span class="tag mono">100% Offline • Zero Internet Permission</span>
-            <span class="tag mono">TYPE_ACCESSIBILITY_OVERLAY</span>
-            <span class="tag mono">Hardware Failsafe</span>
+        <div
+          class="device-viewport"
+          id="phone-screen"
+          tabindex="0"
+          role="button"
+          aria-label="Simulated locked screen. Activate or click to test touch absorption."
+        >
+          <div class="playback-layer">
+            <span class="spec-label">Active Media Surface</span>
+            <strong class="playback-title">Family Video Call / Playback Active</strong>
+            <div class="playback-bar" aria-hidden="true">
+              <div class="playback-fill"></div>
+            </div>
+            <p class="playback-note mono" id="touch-log" aria-live="polite">
+              Tap or click anywhere inside this viewport to test input blocking.
+            </p>
           </div>
 
-          <div class="hero-actions">
-            <a
-              href="https://play.google.com/store/apps/details?id=com.burgessmeditation.touchguard"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-primary"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M3.609 1.814L13.792 12 3.61 22.186a2.213 2.213 0 0 1-.61-.318c-.615-.46-.999-1.2-.999-2.029V4.161c0-.83.384-1.569 1-2.03.18-.133.385-.239.608-.317zM15.207 13.414l2.585 2.586-11.41 6.52 8.825-9.106zm0-2.828L6.382 1.48l11.41 6.52-2.585 2.586zm1.414 1.414l3.655 2.088c1.196.684 1.196 1.8 0 2.484l-3.655 2.089v-6.661z"/>
-              </svg>
-              Google Play Store Listing ↗
-            </a>
-            <a href="/toddler-touch-screen-lock-privacy/" class="btn btn-secondary">
-              Read Official Privacy Policy →
-            </a>
+          <div class="unlocked-banner" id="unlocked-banner" hidden>
+            <strong class="mono">OVERLAY DISMISSED</strong>
+            <p>Normal Android touch input restored.</p>
+            <button type="button" id="btn-relock" class="btn btn-primary btn-sm">
+              Re-Lock Screen
+            </button>
           </div>
         </div>
 
-        <div class="hero-metrics card">
-          <h2 class="metrics-title mono">System Guarantees</h2>
-          <ul class="metrics-list">
-            <li>
-              <div class="metric-val mono text-accent">0 B</div>
-              <div class="metric-lbl">Network Telemetry Sent</div>
-              <p class="metric-desc"><code>android.permission.INTERNET</code> is omitted entirely from manifest.</p>
-            </li>
-            <li>
-              <div class="metric-val mono text-accent-2">100%</div>
-              <div class="metric-lbl">Touch Capture Rate</div>
-              <p class="metric-desc">Consumes all multi-touch & edge gestures at WindowManager layer.</p>
-            </li>
-            <li>
-              <div class="metric-val mono text-purple">2-Way</div>
-              <div class="metric-lbl">Hardware Unlock Path</div>
-              <p class="metric-desc">Volume key cadence combo or instant USB-C power failsafe.</p>
-            </li>
-          </ul>
+        <div class="device-footer mono">
+          <span id="power-state-text">USB-C: Disconnected</span>
+          <span>WindowManager Sink</span>
         </div>
       </div>
-    </section>
 
-    <!-- Interactive Hardware Unlock Simulator -->
-    <section class="section simulator-section">
-      <div class="container">
-        <div class="section-header">
-          <div class="eyebrow mono">Interactive Experience</div>
-          <h2 class="section-title">Hardware Unlock Simulator</h2>
-          <p class="section-subtitle">
-            Test both unlock mechanisms directly in your browser. Tap the phone screen to verify touch rejection,
-            click the side volume buttons in sequence, or plug in the simulated USB-C charging cable.
+      <!-- Controls: Volume Down x3 -> Volume Up x3 + USB-C Failsafe -->
+      <div class="unlock-controls">
+        <div class="mechanism-box">
+          <div class="mech-head">
+            <span class="spec-label">Primary Unlock</span>
+            <h3 class="mech-title">Volume Down ×3 → Volume Up ×3</h3>
+          </div>
+          <p class="mech-desc">
+            Hardware key events bypass the capacitive screen overlay. Complete all six presses within 5 seconds to dismiss the lock.
           </p>
+
+          <div class="sequence-track mono" id="sequence-dots" aria-label="6-step volume sequence progress">
+            <div class="seq-cell is-current" data-step="0"><span>▼</span><small>Dn 1</small></div>
+            <div class="seq-cell" data-step="1"><span>▼</span><small>Dn 2</small></div>
+            <div class="seq-cell" data-step="2"><span>▼</span><small>Dn 3</small></div>
+            <div class="seq-cell" data-step="3"><span>▲</span><small>Up 1</small></div>
+            <div class="seq-cell" data-step="4"><span>▲</span><small>Up 2</small></div>
+            <div class="seq-cell" data-step="5"><span>▲</span><small>Up 3</small></div>
+          </div>
+
+          <div class="timer-track" aria-hidden="true">
+            <div class="timer-fill" id="timer-fill"></div>
+          </div>
+
+          <p class="combo-status mono" id="combo-status-msg" aria-live="polite">
+            Ready: press [Vol −] three times, then [Vol +] three times.
+          </p>
+
+          <div class="hw-btn-row">
+            <button type="button" id="btn-vol-down" class="btn btn-ghost btn-sm mono">
+              [ Vol − ]
+            </button>
+            <button type="button" id="btn-vol-up" class="btn btn-ghost btn-sm mono">
+              [ Vol + ]
+            </button>
+            <button type="button" id="btn-vol-reset" class="btn btn-ghost btn-sm">
+              Reset
+            </button>
+          </div>
         </div>
 
-        <div class="simulator-wrapper">
-          <!-- Phone Silhouette -->
-          <div class="phone-frame" id="sim-phone">
-            <!-- Hardware Buttons on Edge -->
-            <div class="hardware-buttons-left">
-              <button
-                type="button"
-                id="btn-vol-up"
-                class="hw-btn hw-btn-vol"
-                title="Simulate Hardware Volume Up"
-                aria-label="Volume Up button"
-              >
-                <span>+</span>
-                <span class="hw-btn-label">Vol +</span>
-              </button>
-              <button
-                type="button"
-                id="btn-vol-down"
-                class="hw-btn hw-btn-vol"
-                title="Simulate Hardware Volume Down"
-                aria-label="Volume Down button"
-              >
-                <span>−</span>
-                <span class="hw-btn-label">Vol −</span>
-              </button>
-            </div>
-
-            <div class="hardware-buttons-right">
-              <div class="hw-btn hw-btn-power" title="Hardware Power Key"></div>
-            </div>
-
-            <!-- Phone Bezel & Display -->
-            <div class="phone-bezel">
-              <div class="phone-notch">
-                <div class="phone-speaker"></div>
-                <div class="phone-camera"></div>
-              </div>
-
-              <!-- Phone Display Area -->
-              <div class="phone-screen" id="phone-screen" tabindex="0" role="button" aria-label="Simulated phone screen. Click to test touch lock.">
-                <!-- Status Bar -->
-                <div class="sim-status-bar mono">
-                  <span class="sim-time" id="sim-time">10:42</span>
-                  <div class="sim-icons">
-                    <span class="sim-network">5G</span>
-                    <span class="sim-battery">88% 🔋</span>
-                  </div>
-                </div>
-
-                <!-- Active Content: Toddler Cartoon Video Playing -->
-                <div class="sim-video-player">
-                  <div class="video-scene">
-                    <!-- Fun animated SVG scenery -->
-                    <div class="scenery-sun"></div>
-                    <div class="scenery-cloud cloud-1"></div>
-                    <div class="scenery-cloud cloud-2"></div>
-                    <div class="cartoon-bus">
-                      <div class="bus-body">
-                        <div class="bus-window win-1">🐱</div>
-                        <div class="bus-window win-2">🐶</div>
-                        <div class="bus-window win-3">🐻</div>
-                        <div class="bus-wheel wheel-1"></div>
-                        <div class="bus-wheel wheel-2"></div>
-                      </div>
-                    </div>
-                    <div class="road"></div>
-                  </div>
-
-                  <div class="video-overlay-ui">
-                    <div class="video-title">Toddler Tunes: Wheels on the Bus 🎵</div>
-                    <div class="video-progress-bar">
-                      <div class="video-progress-fill"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- TouchGuard Active Lock Overlay -->
-                <div class="touchguard-overlay active" id="touchguard-overlay">
-                  <div class="lock-indicator" id="lock-indicator">
-                    <div class="lock-shield-icon">
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        <path d="M9 12h6m-3-3v6"/>
-                      </svg>
-                    </div>
-                    <span class="lock-shield-text">Touch Blocked</span>
-                  </div>
-
-                  <!-- Ripple / Feedback on click -->
-                  <div class="touch-feedback" id="touch-feedback" aria-live="polite">
-                    <span class="shield-badge">🛡️ Input Discarded</span>
-                    <span class="feedback-sub">Touch absorbed by accessibility overlay. Video keeps playing uninterrupted!</span>
-                  </div>
-                </div>
-
-                <!-- Unlocked Celebration Screen -->
-                <div class="unlocked-overlay" id="unlocked-overlay">
-                  <div class="unlocked-card">
-                    <div class="unlocked-icon">🔓</div>
-                    <h3 class="unlocked-title">Screen Unlocked!</h3>
-                    <p class="unlocked-msg">Normal Android touch input and navigation restored.</p>
-                    <button type="button" id="btn-relock" class="btn btn-primary btn-sm">
-                      🔒 Re-Lock Screen
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- USB-C Port at bottom -->
-              <div class="phone-bottom-edge">
-                <div class="usbc-port" id="usbc-port" title="USB-C Charging Port">
-                  <span class="usbc-slot"></span>
-                  <span class="usbc-spark" id="usbc-spark">⚡</span>
-                </div>
-              </div>
-            </div>
+        <div class="mechanism-box">
+          <div class="mech-head">
+            <span class="spec-label">Hardware Failsafe</span>
+            <h3 class="mech-title">USB-C Power Broadcast</h3>
           </div>
-
-          <!-- Simulator Control Panel -->
-          <div class="simulator-controls card">
-            <h3 class="controls-title mono">Unlock Mechanism Tester</h3>
-            <p class="controls-desc">
-              Test how parents disengage the touch blocker when toddlers return the phone.
-            </p>
-
-            <!-- Mechanism 1: Hardware Volume Combo -->
-            <div class="control-box">
-              <div class="control-header">
-                <span class="control-badge mono">Mechanism 1</span>
-                <span class="control-name">Volume Rhythm Combo</span>
-              </div>
-              <p class="control-explanation">
-                Press <strong>Volume Down × 3</strong>, followed by <strong>Volume Up × 3</strong>.
-                Physical buttons intercept hardware keystrokes even when the touch panel is completely deadened.
-              </p>
-
-              <!-- 6-Dot Tracker -->
-              <div class="tracker-container">
-                <div class="tracker-label mono">Live Key Sequence Tracker:</div>
-                <div class="sequence-dots" id="sequence-dots" aria-label="Volume Sequence Progress">
-                  <div class="seq-step" data-step="0">
-                    <span class="seq-dot">▼</span>
-                    <span class="seq-hint">Down 1</span>
-                  </div>
-                  <div class="seq-step" data-step="1">
-                    <span class="seq-dot">▼</span>
-                    <span class="seq-hint">Down 2</span>
-                  </div>
-                  <div class="seq-step" data-step="2">
-                    <span class="seq-dot">▼</span>
-                    <span class="seq-hint">Down 3</span>
-                  </div>
-                  <div class="seq-step" data-step="3">
-                    <span class="seq-dot">▲</span>
-                    <span class="seq-hint">Up 1</span>
-                  </div>
-                  <div class="seq-step" data-step="4">
-                    <span class="seq-dot">▲</span>
-                    <span class="seq-hint">Up 2</span>
-                  </div>
-                  <div class="seq-step" data-step="5">
-                    <span class="seq-dot">▲</span>
-                    <span class="seq-hint">Up 3</span>
-                  </div>
-                </div>
-
-                <div class="combo-timer" id="combo-timer-bar">
-                  <div class="timer-fill" id="timer-fill"></div>
-                </div>
-                <div class="combo-status mono" id="combo-status-msg">
-                  Waiting for sequence start...
-                </div>
-              </div>
-
-              <div class="interactive-btns-row">
-                <button type="button" id="panel-vol-down" class="btn btn-secondary btn-sm">
-                  Click [ Vol − ]
-                </button>
-                <button type="button" id="panel-vol-up" class="btn btn-secondary btn-sm">
-                  Click [ Vol + ]
-                </button>
-                <button type="button" id="panel-vol-reset" class="btn btn-ghost btn-sm">
-                  Reset Sequence
-                </button>
-              </div>
-            </div>
-
-            <!-- Mechanism 2: USB Failsafe -->
-            <div class="control-box">
-              <div class="control-header">
-                <span class="control-badge mono">Mechanism 2</span>
-                <span class="control-name">Hardware Charging Failsafe</span>
-              </div>
-              <p class="control-explanation">
-                Forgot the volume sequence? Simply plug in any standard USB-C charger. The OS fires an instantaneous
-                <code>ACTION_POWER_CONNECTED</code> hardware broadcast that safely drops the overlay without needing buttons.
-              </p>
-
-              <div class="failsafe-actions">
-                <button type="button" id="btn-toggle-usbc" class="btn btn-secondary btn-full">
-                  <span id="usbc-btn-label">Plug in USB-C Charger ⚡</span>
-                </button>
-              </div>
-              <div class="failsafe-status mono" id="failsafe-status-msg">
-                Power status: Disconnected (Battery)
-              </div>
-            </div>
-
-            <!-- Hint Box -->
-            <div class="simulator-hint">
-              <div class="hint-icon">💡</div>
-              <p>
-                <strong>Try tapping the phone screen above!</strong> A shield badge will indicate that touches
-                are discarded while the cartoon bus continues rolling.
-              </p>
-            </div>
-          </div>
+          <p class="mech-desc">
+            If a parent forgets the volume sequence, plugging in any USB-C charging cable fires <code>ACTION_POWER_CONNECTED</code> and immediately drops the overlay.
+          </p>
+          <button type="button" id="btn-toggle-usbc" class="btn btn-ghost btn-sm">
+            Simulate USB-C Charger Connect
+          </button>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Zero-Trust Privacy & Architecture Breakdown -->
-    <section class="section tech-section">
-      <div class="container">
-        <div class="section-header">
-          <div class="eyebrow mono">Security Architecture</div>
-          <h2 class="section-title">Zero-Trust Privacy vs. Invasive Screen Lockers</h2>
-          <p class="section-subtitle">
-            Most Android screen-lock apps on Google Play require intrusive permissions: full accessibility
-            DOM inspection, network access to load ad SDKs, and device administrator rights. TouchGuard was
-            engineered from day one with mathematical privacy constraints.
-          </p>
-        </div>
+  <!-- Privacy & Android Overlay Architecture -->
+  <section aria-labelledby="privacy-arch-heading" class="section-stack">
+    <div class="prose-block">
+      <span class="spec-label">Privacy &amp; OS Architecture</span>
+      <h2 id="privacy-arch-heading">Zero Network Permissions &amp; Blind Overlay Design</h2>
+      <p>
+        Many screen-lock utilities bundle ad SDKs, request network access, or enable full Accessibility DOM inspection. Toddler Touch Screen Lock (<code>com.burgessmeditation.touchguard</code>) omits <code>android.permission.INTERNET</code> from <code>AndroidManifest.xml</code> entirely—the Android OS kernel denies the process any network socket access.
+      </p>
+      <p>
+        Touch blocking uses a translucent <code>TYPE_ACCESSIBILITY_OVERLAY</code> window to absorb multi-touch and edge-swipe events before they reach underlying video players. In its service configuration, both <code>canRetrieveWindowContent="false"</code> and <code>canPerformGestures="false"</code> are enforced by the OS so the app can neither read on-screen text nor synthesize taps. Full compliance details are published in the <a href="/toddler-touch-screen-lock-privacy/" class="inline-policy-link">Toddler Touch Screen Lock Privacy Policy</a>.
+      </p>
+    </div>
 
-        <!-- Comparison Table Card -->
-        <div class="comparison-card card">
-          <div class="comparison-table-wrapper">
-            <table class="comparison-table">
-              <thead>
-                <tr>
-                  <th>Security Attribute</th>
-                  <th>Typical "Free" Lock Apps</th>
-                  <th>TouchGuard (Burgess Meditation LLC)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Internet Permission</strong></td>
-                  <td class="text-danger"><code>android.permission.INTERNET</code> (Tracks telemetry & ad impressions)</td>
-                  <td class="text-accent-2"><strong>NONE</strong>. Completely omitted from <code>AndroidManifest.xml</code>.</td>
-                </tr>
-                <tr>
-                  <td><strong>Screen Content Reading</strong></td>
-                  <td class="text-danger"><code>canRetrieveWindowContent="true"</code> (Inspects texts & DOM)</td>
-                  <td class="text-accent-2"><strong><code>canRetrieveWindowContent="false"</code></strong> (Physically blocked by OS)</td>
-                </tr>
-                <tr>
-                  <td><strong>Simulated Gestures</strong></td>
-                  <td class="text-danger"><code>canPerformGestures="true"</code> (Can simulate touches/clicks)</td>
-                  <td class="text-accent-2"><strong><code>canPerformGestures="false"</code></strong> (Cannot click or tap)</td>
-                </tr>
-                <tr>
-                  <td><strong>Window Ingestion</strong></td>
-                  <td>Standard foreground floaters (often bypassable)</td>
-                  <td class="text-accent-2"><strong><code>TYPE_ACCESSIBILITY_OVERLAY</code></strong> (Native OS input sink)</td>
-                </tr>
-                <tr>
-                  <td><strong>Account or Sign-in</strong></td>
-                  <td class="text-danger">Requires email / OAuth tracking</td>
-                  <td class="text-accent-2"><strong>Zero account</strong>. 100% offline standalone operation.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Architecture Pillars Grid -->
-        <div class="pillars-grid">
-          <div class="pillar-card card">
-            <div class="pillar-num mono text-accent">01</div>
-            <h3 class="pillar-title">WindowManager Layer Input Sink</h3>
-            <p class="pillar-text">
-              By utilizing Android's specialized <code>TYPE_ACCESSIBILITY_OVERLAY</code> window parameter,
-              the lock screen is rendered above normal application windows, navigation bars, and notification
-              shades. It consumes all touch, multitouch, and edge swipe events before they ever reach underlying
-              apps like YouTube or Netflix.
-            </p>
-            <div class="code-snippet mono">
-              <pre><code>val params = WindowManager.LayoutParams(
-    MATCH_PARENT, MATCH_PARENT,
-    TYPE_ACCESSIBILITY_OVERLAY,
-    FLAG_NOT_FOCUSABLE or FLAG_LAYOUT_IN_SCREEN,
-    PixelFormat.TRANSLUCENT
-)</code></pre>
-            </div>
-          </div>
-
-          <div class="pillar-card card">
-            <div class="pillar-num mono text-accent-2">02</div>
-            <h3 class="pillar-title">Declarative OS-Enforced Blindness</h3>
-            <p class="pillar-text">
-              Android's accessibility framework requires declaring service capabilities in XML.
-              By explicitly binding <code>canRetrieveWindowContent="false"</code>, the Android OS kernel
-              refuses to give the service access to screen text, banking inputs, or video calls.
-            </p>
-            <div class="code-snippet mono">
-              <pre><code>&lt;accessibility-service
-    xmlns:android="..."
-    android:accessibilityEventTypes="typeAllMask"
-    android:canRetrieveWindowContent="false"
-    android:canPerformGestures="false"
-    android:accessibilityFlags="flagDefault" /&gt;</code></pre>
-            </div>
-          </div>
-
-          <div class="pillar-card card">
-            <div class="pillar-num mono text-purple">03</div>
-            <h3 class="pillar-title">Hardware Broadcast Failsafe</h3>
-            <p class="pillar-text">
-              To prevent accidental device lockouts if volume keys are jammed or a parent forgets the sequence,
-              a registered <code>BroadcastReceiver</code> listens directly for <code>ACTION_POWER_CONNECTED</code>.
-              Connecting a charging cable immediately drops the overlay and restores normal operation.
-            </p>
-            <div class="code-snippet mono">
-              <pre><code>override fun onReceive(context: Context, intent: Intent) &#123;
-    if (intent.action == Intent.ACTION_POWER_CONNECTED) &#123;
-        unlockAccessibilityOverlay()
-    &#125;
-&#125;</code></pre>
-            </div>
-          </div>
-        </div>
+    <div class="spec-grid">
+      <div class="spec-cell">
+        <span class="spec-label">01 / Input Sink</span>
+        <h3 class="spec-title"><code>TYPE_ACCESSIBILITY_OVERLAY</code></h3>
+        <p class="spec-text">Intercepts multi-touch and system-bar edge swipes at the WindowManager layer without Device Admin privileges.</p>
       </div>
-    </section>
-
-    <!-- Conversion Bridge Banner -->
-    <section class="section cta-section">
-      <div class="container">
-        <div class="cta-banner">
-          <div class="eyebrow mono">Mobile & Utility Engineering</div>
-          <h2 class="cta-title">Need a privacy-first mobile utility or custom workflow built with zero bloat?</h2>
-          <p class="cta-text">
-            From hardened native Android utilities to production AI agent pipelines and homelab microservices,
-            I engineer local-first, zero-telemetry software that respects user privacy and runs with peak efficiency.
-          </p>
-          <div class="cta-actions">
-            <a href="/#contact" class="btn btn-primary">
-              Discuss Your App or Workflow →
-            </a>
-            <a href="/#projects" class="btn btn-secondary">
-              Explore Other Showcase Projects
-            </a>
-          </div>
-        </div>
+      <div class="spec-cell">
+        <span class="spec-label">02 / OS Blindness</span>
+        <h3 class="spec-title">No Window Inspection</h3>
+        <p class="spec-text">Declares <code>canRetrieveWindowContent="false"</code> and <code>canPerformGestures="false"</code> in XML.</p>
       </div>
-    </section>
-  </div>
-</BaseLayout>
+      <div class="spec-cell">
+        <span class="spec-label">03 / Zero Telemetry</span>
+        <h3 class="spec-title">No <code>INTERNET</code> Permission</h3>
+        <p class="spec-text">Zero analytics SDKs, zero ad networks, zero user accounts, and zero bytes transmitted off-device.</p>
+      </div>
+      <div class="spec-cell">
+        <span class="spec-label">04 / Compliance</span>
+        <h3 class="spec-title">Published on Google Play</h3>
+        <p class="spec-text">Shipped by Burgess Meditation LLC with a standalone <a href="/toddler-touch-screen-lock-privacy/" class="inline-policy-link">public privacy policy</a>.</p>
+      </div>
+    </div>
+  </section>
+</ProjectLayout>
 
 <script is:inline>
-  (function initToddlerSimulator() {
-    var phone = document.getElementById('sim-phone');
+  (function initTouchGuardTester() {
     var screen = document.getElementById('phone-screen');
-    var overlay = document.getElementById('touchguard-overlay');
-    var unlockedOverlay = document.getElementById('unlocked-overlay');
-    var feedback = document.getElementById('touch-feedback');
-    var spark = document.getElementById('usbc-spark');
-    var usbcBtn = document.getElementById('btn-toggle-usbc');
-    var usbcLabel = document.getElementById('usbc-btn-label');
-    var failsafeMsg = document.getElementById('failsafe-status-msg');
+    var touchLog = document.getElementById('touch-log');
+    var unlockedBanner = document.getElementById('unlocked-banner');
+    var stateBadge = document.getElementById('overlay-state-badge');
+    var powerText = document.getElementById('power-state-text');
     var statusMsg = document.getElementById('combo-status-msg');
     var timerFill = document.getElementById('timer-fill');
 
-    var btnVolUp = document.getElementById('btn-vol-up');
     var btnVolDown = document.getElementById('btn-vol-down');
-    var panelVolUp = document.getElementById('panel-vol-up');
-    var panelVolDown = document.getElementById('panel-vol-down');
-    var panelVolReset = document.getElementById('panel-vol-reset');
+    var btnVolUp = document.getElementById('btn-vol-up');
+    var btnVolReset = document.getElementById('btn-vol-reset');
+    var btnUsbc = document.getElementById('btn-toggle-usbc');
     var btnRelock = document.getElementById('btn-relock');
+    var stepEls = document.querySelectorAll('.seq-cell');
 
-    var stepElements = document.querySelectorAll('.seq-step');
-
-    // Sequence state: Target is 0, 1, 2 = Down; 3, 4, 5 = Up
     var currentStep = 0;
     var isLocked = true;
     var isChargerConnected = false;
-    var timerTimeout = null;
+    var blockedCount = 0;
     var timerInterval = null;
-    var feedbackTimeout = null;
-    var timerDuration = 5000; // 5 seconds
+    var timerDuration = 5000;
     var timerStartedAt = 0;
 
     function updateClock() {
+      var el = document.getElementById('sim-clock');
+      if (!el) return;
       var d = new Date();
-      var el = document.getElementById('sim-time');
-      if (el) {
-        var h = d.getHours().toString().padStart(2, '0');
-        var m = d.getMinutes().toString().padStart(2, '0');
-        el.textContent = h + ':' + m;
-      }
+      el.textContent =
+        String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
     }
-    setInterval(updateClock, 30000);
     updateClock();
 
-    function setLocked(locked) {
-      isLocked = locked;
-      if (locked) {
-        overlay.classList.add('active');
-        unlockedOverlay.classList.remove('active');
-        phone.classList.remove('is-unlocked');
-      } else {
-        overlay.classList.remove('active');
-        unlockedOverlay.classList.add('active');
-        phone.classList.add('is-unlocked');
-        resetSequence('Unlocked! Normal input active.');
-      }
-    }
-
-    function resetTimer() {
-      if (timerTimeout) clearTimeout(timerTimeout);
+    function stopTimer() {
       if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
       if (timerFill) timerFill.style.width = '0%';
     }
 
     function startTimer() {
-      resetTimer();
+      stopTimer();
       timerStartedAt = Date.now();
-      timerFill.style.width = '100%';
+      if (timerFill) timerFill.style.width = '100%';
       timerInterval = setInterval(function () {
-        var elapsed = Date.now() - timerStartedAt;
-        var remaining = Math.max(0, timerDuration - elapsed);
-        var pct = (remaining / timerDuration) * 100;
-        if (timerFill) timerFill.style.width = pct + '%';
+        var remaining = Math.max(0, timerDuration - (Date.now() - timerStartedAt));
+        if (timerFill) timerFill.style.width = (remaining / timerDuration) * 100 + '%';
         if (remaining <= 0) {
-          resetSequence('Sequence timed out. Resetting to step 1.');
+          resetSequence('5s window expired — sequence reset to step 1.');
         }
-      }, 50);
+      }, 60);
     }
 
-    function renderDots() {
-      stepElements.forEach(function (el, idx) {
-        el.classList.remove('active', 'success', 'error');
-        if (idx < currentStep) {
-          el.classList.add('success');
+    function renderSteps(isError) {
+      stepEls.forEach(function (el, idx) {
+        el.classList.remove('is-current', 'is-done', 'is-error');
+        if (isError) {
+          el.classList.add('is-error');
+        } else if (idx < currentStep) {
+          el.classList.add('is-done');
         } else if (idx === currentStep && isLocked) {
-          el.classList.add('active');
+          el.classList.add('is-current');
         }
       });
     }
 
-    function resetSequence(msg) {
+    function resetSequence(message) {
       currentStep = 0;
-      resetTimer();
-      renderDots();
-      if (statusMsg && msg) {
-        statusMsg.textContent = msg;
+      stopTimer();
+      renderSteps(false);
+      if (statusMsg && message) statusMsg.textContent = message;
+    }
+
+    function setLocked(locked, reason) {
+      isLocked = locked;
+      if (unlockedBanner) unlockedBanner.hidden = locked;
+      if (stateBadge) {
+        stateBadge.textContent = locked ? 'Overlay: LOCKED' : 'Overlay: UNLOCKED';
+        stateBadge.className = locked ? 'state-badge mono' : 'state-badge mono is-unlocked';
       }
-    }
-
-    function flashError(msg) {
-      stepElements.forEach(function (el) {
-        el.classList.add('error');
-      });
-      if (statusMsg) statusMsg.textContent = msg;
-      setTimeout(function () {
-        resetSequence('Wrong button! Target sequence: Vol Down ×3, then Vol Up ×3');
-      }, 650);
-    }
-
-    function handleKeyPress(key) {
-      if (!isLocked) return;
-
-      // Expected:
-      // steps 0, 1, 2 => 'DOWN'
-      // steps 3, 4, 5 => 'UP'
-      if (currentStep < 3) {
-        if (key === 'DOWN') {
-          currentStep++;
-          startTimer();
-          statusMsg.textContent = 'Correct: Vol Down (' + currentStep + ' of 3). Keep going!';
-          renderDots();
-        } else {
-          flashError('Expected Volume Down! Sequence reset.');
-          return;
+      if (locked) {
+        blockedCount = 0;
+        if (touchLog) {
+          touchLog.textContent = 'Tap or click anywhere inside this viewport to test input blocking.';
         }
-      } else if (currentStep < 6) {
-        if (key === 'UP') {
-          currentStep++;
-          renderDots();
-          if (currentStep === 6) {
-            resetTimer();
-            statusMsg.textContent = 'Sequence complete! Unlocking screen...';
-            setTimeout(function () {
-              setLocked(false);
-            }, 300);
-          } else {
-            startTimer();
-            statusMsg.textContent = 'Correct: Vol Up (' + (currentStep - 3) + ' of 3). Almost there!';
-          }
-        } else {
-          flashError('Expected Volume Up! Sequence reset.');
-          return;
-        }
-      }
-    }
-
-    // Screen Touch Ripple Feedback
-    function onScreenTouch(e) {
-      if (!isLocked) return;
-      e.preventDefault();
-
-      // Ripple position
-      var rect = screen.getBoundingClientRect();
-      var x = (e.clientX || (e.touches && e.touches[0].clientX) || (rect.left + rect.width / 2)) - rect.left;
-      var y = (e.clientY || (e.touches && e.touches[0].clientY) || (rect.top + rect.height / 2)) - rect.top;
-
-      var ripple = document.createElement('div');
-      ripple.className = 'touch-ripple';
-      ripple.style.left = x + 'px';
-      ripple.style.top = y + 'px';
-      screen.appendChild(ripple);
-
-      setTimeout(function () {
-        if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
-      }, 700);
-
-      // Show shield badge briefly
-      feedback.classList.add('visible');
-      if (feedbackTimeout) clearTimeout(feedbackTimeout);
-      feedbackTimeout = setTimeout(function () {
-        feedback.classList.remove('visible');
-      }, 1800);
-    }
-
-    screen.addEventListener('mousedown', onScreenTouch);
-    screen.addEventListener('touchstart', onScreenTouch, { passive: false });
-
-    // Buttons
-    function triggerVolUp() {
-      btnVolUp.classList.add('pressed');
-      setTimeout(function () { btnVolUp.classList.remove('pressed'); }, 150);
-      handleKeyPress('UP');
-    }
-
-    function triggerVolDown() {
-      btnVolDown.classList.add('pressed');
-      setTimeout(function () { btnVolDown.classList.remove('pressed'); }, 150);
-      handleKeyPress('DOWN');
-    }
-
-    btnVolUp.addEventListener('click', triggerVolUp);
-    btnVolDown.addEventListener('click', triggerVolDown);
-    panelVolUp.addEventListener('click', triggerVolUp);
-    panelVolDown.addEventListener('click', triggerVolDown);
-    panelVolReset.addEventListener('click', function () {
-      resetSequence('Sequence cleared manually.');
-    });
-
-    // USB-C Charger Toggle
-    usbcBtn.addEventListener('click', function () {
-      isChargerConnected = !isChargerConnected;
-      if (isChargerConnected) {
-        spark.classList.add('sparking');
-        usbcLabel.textContent = 'Unplug USB-C Charger 🔌';
-        failsafeMsg.textContent = 'Power status: CONNECTED ⚡ (ACTION_POWER_CONNECTED fired!)';
-        failsafeMsg.classList.add('text-accent-2');
-        setLocked(false);
+        resetSequence('Ready: press [Vol −] three times, then [Vol +] three times.');
       } else {
-        spark.classList.remove('sparking');
-        usbcLabel.textContent = 'Plug in USB-C Charger ⚡';
-        failsafeMsg.textContent = 'Power status: Disconnected (Battery)';
-        failsafeMsg.classList.remove('text-accent-2');
+        stopTimer();
+        currentStep = 6;
+        renderSteps(false);
+        if (statusMsg && reason) statusMsg.textContent = reason;
       }
-    });
+    }
 
-    btnRelock.addEventListener('click', function () {
-      if (isChargerConnected) {
-        // Automatically unplug to allow locking
-        isChargerConnected = false;
-        spark.classList.remove('sparking');
-        usbcLabel.textContent = 'Plug in USB-C Charger ⚡';
-        failsafeMsg.textContent = 'Power status: Disconnected (Battery)';
-        failsafeMsg.classList.remove('text-accent-2');
+    function handleVolumeKey(dir) {
+      if (!isLocked) return;
+      var expected = currentStep < 3 ? 'DOWN' : 'UP';
+      if (dir === expected) {
+        currentStep += 1;
+        renderSteps(false);
+        if (currentStep === 6) {
+          setLocked(false, 'Unlocked via Volume Down ×3 -> Volume Up ×3.');
+        } else {
+          startTimer();
+          statusMsg.textContent =
+            currentStep <= 3
+              ? 'Recorded Vol − (' + currentStep + '/3). Continue...'
+              : 'Recorded Vol + (' + (currentStep - 3) + '/3). Almost unlocked...';
+        }
+      } else {
+        renderSteps(true);
+        if (statusMsg) statusMsg.textContent = 'Out-of-order key — resetting cadence...';
+        setTimeout(function () {
+          resetSequence('Target order: [Vol −] ×3 followed by [Vol +] ×3.');
+        }, 500);
       }
-      setLocked(true);
-      resetSequence('Screen re-locked. Test volume buttons or charger again.');
-    });
+    }
 
-    renderDots();
+    if (screen) {
+      screen.addEventListener('click', function (e) {
+        if (!isLocked) return;
+        if (e.target && e.target.id === 'btn-relock') return;
+        blockedCount += 1;
+        if (touchLog) {
+          touchLog.textContent =
+            'Absorbed touch #' + blockedCount + ' via TYPE_ACCESSIBILITY_OVERLAY — playback uninterrupted.';
+        }
+      });
+      screen.addEventListener('keydown', function (e) {
+        if (!isLocked) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          blockedCount += 1;
+          if (touchLog) {
+            touchLog.textContent =
+              'Absorbed input #' + blockedCount + ' via TYPE_ACCESSIBILITY_OVERLAY — playback uninterrupted.';
+          }
+        }
+      });
+    }
+
+    if (btnVolDown) {
+      btnVolDown.addEventListener('click', function () {
+        handleVolumeKey('DOWN');
+      });
+    }
+    if (btnVolUp) {
+      btnVolUp.addEventListener('click', function () {
+        handleVolumeKey('UP');
+      });
+    }
+    if (btnVolReset) {
+      btnVolReset.addEventListener('click', function () {
+        if (isLocked) resetSequence('Sequence cleared.');
+      });
+    }
+
+    if (btnUsbc) {
+      btnUsbc.addEventListener('click', function () {
+        isChargerConnected = !isChargerConnected;
+        if (isChargerConnected) {
+          btnUsbc.textContent = 'Disconnect USB-C Charger';
+          if (powerText) powerText.textContent = 'USB-C: Connected (ACTION_POWER_CONNECTED)';
+          setLocked(false, 'Unlocked immediately via ACTION_POWER_CONNECTED failsafe.');
+        } else {
+          btnUsbc.textContent = 'Simulate USB-C Charger Connect';
+          if (powerText) powerText.textContent = 'USB-C: Disconnected';
+        }
+      });
+    }
+
+    if (btnRelock) {
+      btnRelock.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (isChargerConnected) {
+          isChargerConnected = false;
+          if (btnUsbc) btnUsbc.textContent = 'Simulate USB-C Charger Connect';
+          if (powerText) powerText.textContent = 'USB-C: Disconnected';
+        }
+        setLocked(true);
+      });
+    }
   })();
 </script>
 
 <style>
-  .project-showcase {
-    padding-bottom: 4rem;
-  }
-
-  .breadcrumb-container {
-    padding-top: 1.5rem;
-  }
-
-  /* Hero Section */
-  .hero-section {
-    padding-top: 2rem;
-    padding-bottom: 3.5rem;
-  }
-
-  .hero-container {
-    display: grid;
-    grid-template-columns: 1.35fr 0.85fr;
-    gap: 3rem;
-    align-items: center;
-  }
-
-  @media (max-width: 960px) {
-    .hero-container {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-  }
-
-  .hero-title {
-    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    margin-bottom: 1.25rem;
-  }
-
-  .hero-summary {
-    font-size: 1.125rem;
-    line-height: 1.7;
-    color: var(--muted);
-    margin-bottom: 1.75rem;
-  }
-
-  .hero-tags {
-    margin-bottom: 2rem;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .hero-metrics {
-    padding: 2rem;
-  }
-
-  .metrics-title {
-    font-size: 0.875rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 1.5rem;
-  }
-
-  .metrics-list {
-    list-style: none;
+  .section-stack {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .metric-val {
-    font-size: 2rem;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 0.25rem;
-  }
-
-  .metric-lbl {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 0.2rem;
-  }
-
-  .metric-desc {
-    font-size: 0.8125rem;
-    color: var(--muted);
-    line-height: 1.4;
-  }
-
-  .text-accent { color: var(--accent); }
-  .text-accent-2 { color: var(--accent-2); }
-  .text-purple { color: var(--accent-purple); }
-  .text-danger { color: #f87171; }
-
-  /* Simulator Section */
-  .simulator-section {
-    background: rgba(17, 24, 39, 0.4);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .section-header {
-    text-align: center;
-    max-width: 720px;
-    margin: 0 auto 3rem;
-  }
-
-  .section-title {
-    font-size: clamp(1.875rem, 3.5vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    margin-bottom: 0.875rem;
-  }
-
-  .section-subtitle {
-    font-size: 1.0625rem;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .simulator-wrapper {
-    display: grid;
-    grid-template-columns: minmax(320px, 380px) 1.2fr;
-    gap: 3.5rem;
-    align-items: center;
-    justify-content: center;
-    max-width: 1060px;
-    margin: 0 auto;
-  }
-
-  @media (max-width: 900px) {
-    .simulator-wrapper {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
-  }
-
-  /* Phone Frame */
-  .phone-frame {
-    position: relative;
-    width: 320px;
-    margin: 0 auto;
-    padding: 0 14px;
-    user-select: none;
-  }
-
-  .hardware-buttons-left {
-    position: absolute;
-    left: 2px;
-    top: 110px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    z-index: 10;
-  }
-
-  .hw-btn {
-    background: #1e293b;
-    border: 1px solid #475569;
-    border-radius: 4px 0 0 4px;
-    color: #94a3b8;
-    cursor: pointer;
-    font-size: 0.75rem;
-    font-weight: 700;
-    width: 22px;
-    height: 48px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.5);
-    transition: all 0.1s ease;
-    padding: 0;
-  }
-
-  .hw-btn:hover {
-    background: var(--accent);
-    color: #0b0f19;
-    border-color: var(--accent);
-  }
-
-  .hw-btn.pressed {
-    transform: translateX(4px);
-    background: var(--accent-2);
-    color: #0b0f19;
-  }
-
-  .hw-btn-label {
-    font-size: 0.55rem;
-    font-family: var(--font-mono);
-    line-height: 1;
-    margin-top: 2px;
-  }
-
-  .hardware-buttons-right {
-    position: absolute;
-    right: 2px;
-    top: 140px;
-    z-index: 10;
-  }
-
-  .hw-btn-power {
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 0 4px 4px 0;
-    width: 14px;
-    height: 54px;
-  }
-
-  .phone-bezel {
-    position: relative;
-    background: #030712;
-    border: 4px solid #334155;
-    border-radius: 40px;
-    padding: 12px 10px 18px;
-    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px #1e293b;
-    overflow: hidden;
-  }
-
-  .phone-notch {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    height: 20px;
-    margin-bottom: 6px;
-  }
-
-  .phone-speaker {
-    width: 44px;
-    height: 4px;
-    background: #1f2937;
-    border-radius: 2px;
-  }
-
-  .phone-camera {
-    width: 8px;
-    height: 8px;
-    background: #111827;
-    border: 1px solid #374151;
-    border-radius: 50%;
-  }
-
-  /* Phone Screen Content */
-  .phone-screen {
-    position: relative;
-    width: 100%;
-    height: 520px;
-    background: #0b1329;
-    border-radius: 28px;
-    overflow: hidden;
-    cursor: pointer;
-    outline: none;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .sim-status-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 14px 2px;
-    font-size: 0.7rem;
-    color: #e2e8f0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 5;
-  }
-
-  .sim-icons {
-    display: flex;
-    gap: 6px;
-  }
-
-  /* Video Player Mockup */
-  .sim-video-player {
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background: linear-gradient(180deg, #38bdf8 0%, #bae6fd 60%, #4ade80 60%, #15803d 100%);
-  }
-
-  .video-scene {
-    position: relative;
-    flex: 1;
-    overflow: hidden;
-  }
-
-  .scenery-sun {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    width: 38px;
-    height: 38px;
-    background: #fbbf24;
-    border-radius: 50%;
-    box-shadow: 0 0 18px #f59e0b;
-  }
-
-  .scenery-cloud {
-    position: absolute;
-    background: #ffffff;
-    border-radius: 20px;
-    opacity: 0.9;
-  }
-
-  .cloud-1 {
-    top: 35px;
-    left: 20px;
-    width: 50px;
-    height: 18px;
-    animation: drift 14s infinite linear;
-  }
-
-  .cloud-2 {
-    top: 65px;
-    right: 60px;
-    width: 40px;
-    height: 14px;
-    animation: drift 18s infinite linear reverse;
-  }
-
-  @keyframes drift {
-    0% { transform: translateX(-30px); }
-    100% { transform: translateX(120px); }
-  }
-
-  .cartoon-bus {
-    position: absolute;
-    bottom: 25px;
-    left: 40px;
-    animation: bus-bounce 0.8s infinite ease-in-out alternate;
-  }
-
-  @keyframes bus-bounce {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-3px); }
-  }
-
-  .bus-body {
-    position: relative;
-    width: 140px;
-    height: 70px;
-    background: #facc15;
-    border: 3px solid #000;
-    border-radius: 12px 24px 8px 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 6px;
-  }
-
-  .bus-window {
-    width: 26px;
-    height: 26px;
-    background: #e0f2fe;
-    border: 2px solid #000;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-  }
-
-  .bus-wheel {
-    position: absolute;
-    bottom: -10px;
-    width: 22px;
-    height: 22px;
-    background: #1e293b;
-    border: 3px solid #000;
-    border-radius: 50%;
-  }
-
-  .wheel-1 { left: 16px; }
-  .wheel-2 { right: 20px; }
-
-  .road {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 25px;
-    background: #334155;
-    border-top: 2px solid #0f172a;
-  }
-
-  .video-overlay-ui {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 8px 12px;
-    z-index: 4;
-  }
-
-  .video-title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #f8fafc;
-    margin-bottom: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .video-progress-bar {
-    height: 4px;
-    background: #475569;
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .video-progress-fill {
-    height: 100%;
-    width: 48%;
-    background: #ef4444;
-  }
-
-  /* TouchGuard Overlay */
-  .touchguard-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(3, 7, 18, 0.25);
-    backdrop-filter: blur(0.5px);
-    z-index: 20;
-    pointer-events: auto;
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 30px 14px 14px;
-  }
-
-  .touchguard-overlay.active {
-    display: flex;
-  }
-
-  .lock-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(15, 23, 42, 0.85);
-    border: 1px solid rgba(56, 189, 248, 0.4);
-    padding: 6px 12px;
-    border-radius: var(--radius-pill);
-    color: var(--accent);
-    align-self: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  }
-
-  .lock-shield-icon svg {
-    color: var(--accent);
-  }
-
-  .lock-shield-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .touch-feedback {
-    background: rgba(15, 23, 42, 0.95);
-    border: 1px solid var(--accent);
-    border-radius: var(--radius);
-    padding: 12px;
-    text-align: center;
-    color: var(--text);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.2s ease;
-    pointer-events: none;
-    margin-bottom: 20px;
-  }
-
-  .touch-feedback.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .shield-badge {
-    display: block;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
-
-  .feedback-sub {
-    display: block;
-    font-size: 0.72rem;
-    color: var(--muted);
-    line-height: 1.3;
-  }
-
-  /* Unlocked Overlay */
-  .unlocked-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(6, 78, 59, 0.85);
-    backdrop-filter: blur(4px);
-    z-index: 25;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  .unlocked-overlay.active {
-    display: flex;
-    animation: fade-in 0.25s ease;
-  }
-
-  @keyframes fade-in {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  .unlocked-card {
-    background: #064e3b;
-    border: 2px solid var(--accent-2);
-    border-radius: var(--radius);
-    padding: 24px 18px;
-    text-align: center;
-    color: #f8fafc;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-  }
-
-  .unlocked-icon {
-    font-size: 2.25rem;
-    margin-bottom: 8px;
-  }
-
-  .unlocked-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: #a7f3d0;
-    margin-bottom: 6px;
-  }
-
-  .unlocked-msg {
-    font-size: 0.8125rem;
-    color: #d1fae5;
-    margin-bottom: 16px;
-    line-height: 1.4;
-  }
-
-  /* Touch Ripple */
-  .touch-ripple {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: rgba(56, 189, 248, 0.6);
-    border: 2px solid var(--accent);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    animation: ripple-anim 0.6s ease-out forwards;
-    pointer-events: none;
-    z-index: 30;
-  }
-
-  @keyframes ripple-anim {
-    to {
-      transform: translate(-50%, -50%) scale(4);
-      opacity: 0;
-    }
-  }
-
-  /* Phone Bottom Edge & USB-C */
-  .phone-bottom-edge {
-    display: flex;
-    justify-content: center;
-    padding-top: 10px;
-  }
-
-  .usbc-port {
-    position: relative;
-    width: 36px;
-    height: 8px;
-    background: #0f172a;
-    border: 1px solid #334155;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .usbc-slot {
-    width: 22px;
-    height: 3px;
-    background: #000;
-    border-radius: 2px;
-  }
-
-  .usbc-spark {
-    position: absolute;
-    font-size: 1rem;
-    bottom: -18px;
-    opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-
-  .usbc-spark.sparking {
-    opacity: 1;
-    transform: scale(1.3);
-    animation: pulse-spark 0.6s infinite alternate;
-  }
-
-  @keyframes pulse-spark {
-    0% { transform: scale(1.1); filter: drop-shadow(0 0 4px #eab308); }
-    100% { transform: scale(1.5); filter: drop-shadow(0 0 10px #fbbf24); }
-  }
-
-  /* Simulator Controls Card */
-  .simulator-controls {
-    padding: 2.25rem;
-  }
-
-  .controls-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-  }
-
-  .controls-desc {
-    font-size: 0.9375rem;
-    color: var(--muted);
-    margin-bottom: 1.75rem;
-  }
-
-  .control-box {
-    background: var(--surface-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .control-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .control-badge {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.5rem;
-    background: rgba(56, 189, 248, 0.1);
-    color: var(--accent);
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-  }
-
-  .control-name {
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--text);
-  }
-
-  .control-explanation {
-    font-size: 0.875rem;
-    color: var(--muted);
-    line-height: 1.5;
-    margin-bottom: 1.25rem;
-  }
-
-  /* Sequence Dots */
-  .tracker-container {
-    background: rgba(11, 15, 25, 0.6);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 1rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .tracker-label {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-bottom: 0.75rem;
-  }
-
-  .sequence-dots {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .seq-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 8px 4px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    transition: all 0.15s ease;
-  }
-
-  .seq-dot {
-    font-size: 1rem;
-    font-weight: 800;
-    color: var(--text-dim);
-  }
-
-  .seq-hint {
-    font-size: 0.65rem;
-    font-family: var(--font-mono);
-    color: var(--muted);
-  }
-
-  .seq-step.active {
-    border-color: var(--accent);
-    background: rgba(56, 189, 248, 0.12);
-  }
-
-  .seq-step.active .seq-dot {
-    color: var(--accent);
-    transform: scale(1.15);
-  }
-
-  .seq-step.success {
-    border-color: var(--accent-2);
-    background: rgba(16, 185, 129, 0.15);
-  }
-
-  .seq-step.success .seq-dot {
-    color: var(--accent-2);
-  }
-
-  .seq-step.error {
-    border-color: #ef4444;
-    background: rgba(239, 68, 68, 0.2);
-    animation: shake 0.3s ease;
-  }
-
-  .seq-step.error .seq-dot {
-    color: #ef4444;
-  }
-
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-4px); }
-    75% { transform: translateX(4px); }
-  }
-
-  .combo-timer {
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 0.5rem;
-  }
-
-  .timer-fill {
-    height: 100%;
-    width: 0%;
-    background: var(--accent);
-    transition: width 0.05s linear;
-  }
-
-  .combo-status {
-    font-size: 0.75rem;
-    color: var(--accent);
-    min-height: 1.2rem;
-  }
-
-  .interactive-btns-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .failsafe-status {
-    font-size: 0.8125rem;
-    color: var(--muted);
-    margin-top: 0.75rem;
-    text-align: center;
-  }
-
-  .simulator-hint {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    background: rgba(56, 189, 248, 0.06);
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    border-radius: var(--radius-sm);
-    padding: 0.875rem 1rem;
-    font-size: 0.875rem;
-    color: var(--muted);
-    line-height: 1.4;
-  }
-
-  .hint-icon {
-    font-size: 1.125rem;
-    flex-shrink: 0;
-  }
-
-  /* Comparison Card */
-  .tech-section {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-  }
-
-  .comparison-card {
-    padding: 0;
-    overflow: hidden;
-    margin-bottom: 3.5rem;
-  }
-
-  .comparison-table-wrapper {
-    overflow-x: auto;
-  }
-
-  .comparison-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9375rem;
-    text-align: left;
-  }
-
-  .comparison-table th,
-  .comparison-table td {
-    padding: 1.125rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .comparison-table th {
-    background: rgba(15, 23, 42, 0.6);
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-  }
-
-  .comparison-table tbody tr:last-child td {
-    border-bottom: none;
-  }
-
-  .comparison-table tbody tr:hover td {
-    background: rgba(255, 255, 255, 0.02);
-  }
-
-  /* Pillars Grid */
-  .pillars-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
     gap: 1.75rem;
   }
 
-  @media (max-width: 960px) {
-    .pillars-grid {
+  .simulator-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+  }
+
+  .panel-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .panel-title {
+    font-size: 1.2rem;
+    margin-top: 0.25rem;
+  }
+
+  .state-badge {
+    font-size: 0.76rem;
+    padding: 0.36rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-accent);
+    color: var(--accent);
+    background: var(--bg-canvas);
+  }
+
+  .state-badge.is-unlocked {
+    border-color: var(--border-strong);
+    color: var(--live-dot);
+  }
+
+  .sim-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .device-frame {
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .device-header,
+  .device-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .device-footer {
+    border-bottom: none;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .device-viewport {
+    position: relative;
+    flex: 1;
+    min-height: 230px;
+    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .playback-layer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .playback-title {
+    font-size: 1.02rem;
+    color: var(--text-primary);
+  }
+
+  .playback-bar {
+    height: 4px;
+    width: 100%;
+    background: var(--bg-elevated);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .playback-fill {
+    width: 62%;
+    height: 100%;
+    background: var(--accent);
+  }
+
+  .playback-note {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .unlocked-banner {
+    position: absolute;
+    inset: 0;
+    background: rgba(9, 11, 15, 0.94);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .unlocked-banner[hidden] {
+    display: none;
+  }
+
+  .unlocked-banner strong {
+    color: var(--live-dot);
+    font-size: 0.85rem;
+  }
+
+  .unlocked-banner p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+  }
+
+  .unlock-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .mechanism-box {
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: 1.15rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+
+  .mech-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .mech-title {
+    font-size: 1rem;
+  }
+
+  .mech-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+  }
+
+  .sequence-track {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    border-top: 1px solid var(--border-hairline);
+    border-left: 1px solid var(--border-hairline);
+  }
+
+  .seq-cell {
+    padding: 0.5rem 0.25rem;
+    border-right: 1px solid var(--border-hairline);
+    border-bottom: 1px solid var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  .seq-cell small {
+    font-size: 0.66rem;
+  }
+
+  .seq-cell.is-current {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .seq-cell.is-done {
+    color: var(--live-dot);
+  }
+
+  .seq-cell.is-error {
+    color: var(--danger);
+  }
+
+  .timer-track {
+    width: 100%;
+    height: 3px;
+    background: var(--bg-elevated);
+    overflow: hidden;
+  }
+
+  .timer-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--accent);
+    transition: width 60ms linear;
+  }
+
+  .combo-status {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+  }
+
+  .hw-btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .prose-block code,
+  .spec-title code,
+  .spec-text code,
+  .mech-desc code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    color: var(--text-primary);
+  }
+
+  .inline-policy-link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .inline-policy-link:hover {
+    color: var(--accent-hover);
+  }
+
+  @media (max-width: 860px) {
+    .sim-grid {
       grid-template-columns: 1fr;
     }
   }
 
-  .pillar-card {
-    padding: 2rem;
-  }
-
-  .pillar-num {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin-bottom: 0.75rem;
-  }
-
-  .pillar-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.75rem;
-  }
-
-  .pillar-text {
-    font-size: 0.9375rem;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 1.25rem;
-  }
-
-  .code-snippet {
-    background: #060911;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 1rem;
-    font-size: 0.75rem;
-    overflow-x: auto;
-    color: #e2e8f0;
-    line-height: 1.45;
-  }
-
-  /* CTA Section */
-  .cta-section {
-    padding-top: 2rem;
-    padding-bottom: 5rem;
-  }
-
-  .cta-title {
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    margin-bottom: 1rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .cta-text {
-    font-size: 1.125rem;
-    color: var(--muted);
-    max-width: 680px;
-    margin: 0 auto 2rem;
-    line-height: 1.6;
-  }
-
-  .cta-actions {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
+  @media (max-width: 440px) {
+    .device-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 </style>

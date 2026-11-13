@@ -3,161 +3,42 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Page Not Found (404) | Elijah Burgess"
-  description="The requested route or resource could not be found on eliburgessconsulting.com."
+  title="Page not found"
+  description="The requested page could not be found."
 >
-  <section class="section not-found-section">
-    <div class="container not-found-container">
-      <div class="not-found-content">
-        <div class="eyebrow mono">
-          <span class="status-dot static"></span>
-          Error 404 // Route Not Found
-        </div>
-        <h1 class="not-found-title">Page not found</h1>
-        <p class="not-found-desc">
-          The page or system demo you are looking for has been relocated, renamed, or is currently running on an internal homelab port.
-        </p>
-
-        <div class="not-found-actions">
-          <a href="/" class="btn btn-primary">
-            Return to Homepage
-          </a>
-          <a href="/#projects" class="btn btn-secondary">
-            View AI Showcase
-          </a>
-          <a href="/#contact" class="btn btn-ghost">
-            Book an Intro Call
-          </a>
-        </div>
-
-        <div class="not-found-card card">
-          <h2 class="quick-links-title mono">System Navigation Shortcuts</h2>
-          <div class="quick-links-grid">
-            <a href="/#services" class="quick-link-item">
-              <span class="quick-link-name">Services & Coaching</span>
-              <span class="quick-link-hint">AI workflow audits & 1-on-1 coaching</span>
-            </a>
-            <a href="/#projects" class="quick-link-item">
-              <span class="quick-link-name">Live AI Demos</span>
-              <span class="quick-link-hint">BoredGamer Arena, BioHub & Agent Gateway</span>
-            </a>
-            <a href="/#process" class="quick-link-item">
-              <span class="quick-link-name">Development Process</span>
-              <span class="quick-link-hint">How we build, deploy & automate</span>
-            </a>
-            <a href="/toddler-touch-screen-lock-privacy/" class="quick-link-item">
-              <span class="quick-link-name">Toddler Lock App</span>
-              <span class="quick-link-hint">Published utility privacy documentation</span>
-            </a>
-          </div>
-        </div>
-      </div>
+  <section class="not-found" aria-labelledby="not-found-heading">
+    <div class="container not-found-inner">
+      <span class="section-index">404</span>
+      <h1 id="not-found-heading" class="not-found-title">Page not found</h1>
+      <p class="not-found-copy">
+        The page you requested does not exist or has moved to a different address.
+      </p>
+      <a href="/" class="btn btn-ghost">← Return Home</a>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .not-found-section {
-    min-height: calc(80vh - var(--header-height));
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .not-found {
+    padding-block: clamp(5rem, 12vw, 8.5rem);
   }
 
-  .not-found-container {
-    max-width: 720px;
-  }
-
-  .not-found-content {
+  .not-found-inner {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
   }
 
   .not-found-title {
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    font-weight: 800;
+    margin-top: 0.55rem;
+    font-size: clamp(2rem, 4.5vw, 3rem);
     letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-    color: var(--text);
   }
 
-  .not-found-desc {
-    font-size: 1.125rem;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 2rem;
-  }
-
-  .not-found-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.875rem;
-    margin-bottom: 3rem;
-    width: 100%;
-  }
-
-  .not-found-card {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.75rem;
-  }
-
-  .quick-links-title {
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-    margin-bottom: 1.25rem;
-  }
-
-  .quick-links-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
-  }
-
-  .quick-link-item {
-    display: flex;
-    flex-direction: column;
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius-sm);
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-subtle);
-    text-decoration: none;
-    transition: all 0.15s ease;
-  }
-
-  .quick-link-item:hover {
-    background: var(--surface-hover);
-    border-color: var(--border-highlight);
-    transform: translateY(-1px);
-  }
-
-  .quick-link-name {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .quick-link-hint {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 0.25rem;
-  }
-
-  @media (max-width: 640px) {
-    .not-found-actions {
-      flex-direction: column;
-    }
-    .not-found-actions .btn {
-      width: 100%;
-    }
-    .quick-links-grid {
-      grid-template-columns: 1fr;
-    }
+  .not-found-copy {
+    margin: 0.9rem 0 1.85rem;
+    font-size: 1.02rem;
+    color: var(--text-secondary);
+    max-width: 48ch;
   }
 </style>

@@ -1,0 +1,302 @@
+---
+import { projectsContent } from '../data/site-content';
+
+const featuredProjects = projectsContent.items.filter((p) => p.featured);
+const secondaryProjects = projectsContent.items.filter((p) => !p.featured);
+
+const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
+---
+
+<section id="projects" class="section-rule" aria-labelledby="projects-heading">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-index">{projectsContent.sectionLabel}</span>
+      <h2 id="projects-heading" class="section-title">{projectsContent.heading}</h2>
+    </div>
+
+    <div class="projects-featured">
+      {featuredProjects.map((project) => {
+        const externalLive = isExternal(project.liveUrl);
+        return (
+          <article class="project-card project-card-featured">
+            <div class="card-meta">
+              <span class="card-stack mono">{project.stack.join(' / ')}</span>
+              {project.statusEndpoint && (
+                <span
+                  class="live-metric mono"
+                  data-live-metric={project.slug}
+                  data-status-endpoint={project.statusEndpoint}
+                >
+                  <span class="live-dot" aria-hidden="true"></span>
+                  <span class="live-metric-text">Interactive Demo</span>
+                </span>
+              )}
+            </div>
+
+            <h3 class="card-title-featured">{project.title}</h3>
+            <p class="card-summary-featured">{project.summary}</p>
+
+            <div class="card-footer">
+              {project.liveUrl && project.liveLabel && (
+                <a
+                  href={project.liveUrl}
+                  target={externalLive ? '_blank' : undefined}
+                  rel={externalLive ? 'noopener noreferrer' : undefined}
+                  class="card-accent-link mono"
+                >
+                  {project.liveLabel} {externalLive ? '↗' : '→'}
+                </a>
+              )}
+              <a href={project.href} class="text-link">
+                Architecture →
+              </a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <div class="projects-secondary">
+      {secondaryProjects.map((project) => {
+        const externalLive = isExternal(project.liveUrl);
+        return (
+          <article class="project-card project-card-secondary">
+            <p class="card-stack mono">{project.stack.join(' / ')}</p>
+            <h3 class="card-title-secondary">{project.title}</h3>
+            <p class="card-summary-secondary">{project.summary}</p>
+
+            <div class="card-footer card-footer-compact">
+              <a href={project.href} class="text-link card-case-link">
+                Case Study →
+              </a>
+              {project.liveUrl && project.liveLabel && (
+                <a
+                  href={project.liveUrl}
+                  target={externalLive ? '_blank' : undefined}
+                  rel={externalLive ? 'noopener noreferrer' : undefined}
+                  class="text-link"
+                >
+                  {project.liveLabel} {externalLive ? '↗' : '→'}
+                </a>
+              )}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    var base = window.__API_BASE__ || 'https://api.eliburgessconsulting.com';
+    var metrics = document.querySelectorAll('[data-live-metric]');
+    metrics.forEach(function (el) {
+      var slug = el.getAttribute('data-live-metric');
+      var endpoint = el.getAttribute('data-status-endpoint');
+      if (!endpoint) return;
+
+      var textEl = el.querySelector('.live-metric-text');
+      var controller =
+        typeof AbortController !== 'undefined' ? new AbortController() : null;
+      var timeoutId = setTimeout(function () {
+        if (controller) controller.abort();
+      }, 2500);
+
+      fetch(base + endpoint, {
+        headers: { Accept: 'application/json' },
+        signal: controller ? controller.signal : undefined,
+      })
+        .then(function (res) {
+          clearTimeout(timeoutId);
+          return res.ok ? res.json() : null;
+        })
+        .then(function (data) {
+          if (!data) return;
+          if (slug === 'boredgamer-arena' && data.online !== false) {
+            el.classList.add('is-live');
+            if (textEl) {
+              textEl.textContent =
+                data.active_tables && data.active_tables > 0
+                  ? 'Live · ' +
+                    data.active_tables +
+                    (data.active_tables === 1 ? ' Table' : ' Tables')
+                  : 'Live · 2 Engines';
+            }
+          } else if (slug === 'deal-hunter' && data.available !== false) {
+            el.classList.add('is-live');
+            if (textEl) {
+              var count =
+                typeof data.active_deals_count === 'number' &&
+                data.active_deals_count > 0
+                  ? data.active_deals_count
+                  : null;
+              textEl.textContent =
+                count !== null ? 'Live · ' + count + ' Deals' : 'Live App';
+            }
+          }
+        })
+        .catch(function () {
+          clearTimeout(timeoutId);
+          if (textEl) textEl.textContent = 'Interactive Demo';
+        });
+    });
+  })();
+</script>
+
+<style>
+  .projects-featured {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 780px) {
+    .projects-featured {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .projects-secondary {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+  }
+
+  @media (min-width: 860px) {
+    .projects-secondary {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    transition: border-color 150ms ease, background-color 150ms ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--border-strong);
+    background-color: var(--bg-elevated-hover);
+  }
+
+  .project-card-featured {
+    padding: 1.65rem;
+  }
+
+  .project-card-secondary {
+    padding: 1.35rem;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-stack {
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+  }
+
+  .project-card-secondary .card-stack {
+    margin-bottom: 0.75rem;
+  }
+
+  .live-metric {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    font-size: 0.73rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .live-dot {
+    display: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--live-dot);
+    flex-shrink: 0;
+  }
+
+  .live-metric.is-live {
+    color: var(--text-secondary);
+  }
+
+  .live-metric.is-live .live-dot {
+    display: inline-block;
+  }
+
+  .card-title-featured {
+    font-size: 1.25rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-summary-featured {
+    font-size: 0.95rem;
+    line-height: 1.62;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .card-title-secondary {
+    font-size: 1.08rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-summary-secondary {
+    font-size: 0.9rem;
+    line-height: 1.58;
+    color: var(--text-secondary);
+    margin-bottom: 1.35rem;
+  }
+
+  .card-footer {
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-hairline);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+  }
+
+  .card-footer-compact {
+    padding-top: 1.05rem;
+  }
+
+  .card-accent-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 550;
+    color: var(--accent);
+    transition: color 140ms ease;
+  }
+
+  .card-accent-link:hover {
+    color: var(--accent-hover);
+  }
+
+  .card-case-link {
+    color: var(--text-primary);
+    font-size: 0.86rem;
+  }
+
+  .card-footer-compact .text-link {
+    font-size: 0.86rem;
+  }
+</style>

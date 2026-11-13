@@ -100,6 +100,44 @@ def _load_pushover_creds() -> tuple[Optional[str], Optional[str]]:
     return user_key, api_token
 
 
+def _load_fanout_endpoints() -> tuple[Optional[str], Optional[str]]:
+    """
+    Safely retrieves optional NTFY_URL and DISCORD_WEBHOOK_URL.
+    Checks environment variables first, then reads .env files on CT 104 if present.
+    """
+    ntfy_url = os.environ.get("NTFY_URL")
+    discord_webhook = os.environ.get("DISCORD_WEBHOOK_URL")
+    if ntfy_url and discord_webhook:
+        return ntfy_url, discord_webhook
+
+    env_paths = [
+        Path("/opt/apps/website-api/.env"),
+        Path("/opt/apps/deal-hunter/.env"),
+    ]
+    for env_path in env_paths:
+        if not env_path.is_file():
+            continue
+        try:
+            with open(env_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith("#") or "=" not in line:
+                        continue
+                    k, v = line.split("=", 1)
+                    k = k.strip()
+                    v = v.strip().strip("'\"")
+                    if not ntfy_url and k == "NTFY_URL":
+                        ntfy_url = v
+                    elif not discord_webhook and k == "DISCORD_WEBHOOK_URL":
+                        discord_webhook = v
+        except Exception:
+            pass
+        if ntfy_url and discord_webhook:
+            break
+
+    return ntfy_url, discord_webhook
+
+
 def init_db():
     try:
         DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -294,6 +332,35 @@ async def submit_inquiry(req: InquiryRequest, request: Request):
                         "message": f"{req.name} <{req.email}>\n\n{req.message[:400]}",
                     },
                 )
+        except Exception:
+            pass
+
+    # 5. Optional Notification Fan-Out: NTFY and Discord Webhook (failures never break the response)
+    ntfy_url, discord_webhook = _load_fanout_endpoints()
+    if ntfy_url:
+        try:
+            async with httpx.AsyncClient(timeout=3.0) as client:
+                tier_label = req.service_tier or "General"
+                body_text = f"From: {req.name} <{req.email}>\nTopic: {tier_label}\n\n{req.message}"
+                await client.post(
+                    ntfy_url,
+                    content=body_text.encode("utf-8"),
+                    headers={
+                        "Title": f"New Website Inquiry ({tier_label})",
+                        "Content-Type": "text/plain; charset=utf-8",
+                    },
+                )
+        except Exception:
+            pass
+
+    if discord_webhook:
+        try:
+            async with httpx.AsyncClient(timeout=3.0) as client:
+                tier_label = req.service_tier or "General"
+                discord_payload = {
+                    "content": f"**New Website Inquiry ({tier_label})**\nFrom: {req.name} <{req.email}>\n\n{req.message[:1800]}"
+                }
+                await client.post(discord_webhook, json=discord_payload)
         except Exception:
             pass
 
