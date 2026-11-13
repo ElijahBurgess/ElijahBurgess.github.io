@@ -22,14 +22,14 @@ fi
 
 echo "==> [2/4] Syncing Forgejo (CT 107) & live workspace on VM 102 (/home/agent/workspace/Website)..."
 if GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND="ssh -o BatchMode=yes -o ConnectTimeout=3" git push forgejo main 2>/dev/null; then
-  ssh -o BatchMode=yes "$VM102_HOST" "cd /home/agent/workspace/Website && git fetch forgejo && git reset --hard forgejo/main && npm install --no-audit --no-fund"
+  ssh -o BatchMode=yes "$VM102_HOST" "cd /home/agent/workspace/Website && git fetch forgejo && git reset --hard forgejo/main && npm install --no-audit --no-fund && sudo -n systemctl restart website-dev.service"
 else
   # Relay bundle to VM 102 and push canonical main to Forgejo from VM 102
   BUNDLE_TMP="/tmp/website-sync-$$.bundle"
   git bundle create "$BUNDLE_TMP" HEAD main
   scp -q "$BUNDLE_TMP" "${VM102_HOST}:/tmp/website-sync.bundle"
   rm -f "$BUNDLE_TMP"
-  ssh -o BatchMode=yes "$VM102_HOST" "cd /home/agent/workspace/Website && git fetch /tmp/website-sync.bundle main:refs/remotes/sync/main && git checkout -B main refs/remotes/sync/main && rm -f /tmp/website-sync.bundle && git push forgejo main && npm install --no-audit --no-fund"
+  ssh -o BatchMode=yes "$VM102_HOST" "cd /home/agent/workspace/Website && git fetch /tmp/website-sync.bundle main:refs/remotes/sync/main && git checkout -B main refs/remotes/sync/main && rm -f /tmp/website-sync.bundle && git push forgejo main && npm install --no-audit --no-fund && sudo -n systemctl restart website-dev.service"
 fi
 
 SHARED_PROJECTS_DIR="${HOME}/Shared/Projects"
