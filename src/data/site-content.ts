@@ -3,6 +3,12 @@ export interface NavItem {
   href: string;
 }
 
+export interface HeroPillar {
+  label: string;
+  title: string;
+  detail: string;
+}
+
 export interface ProjectEntry {
   slug: string;
   title: string;
@@ -29,17 +35,22 @@ export interface BioFact {
   value: string;
 }
 
+export interface BioAchievement {
+  title: string;
+  detail: string;
+}
+
 export const siteMeta = {
   name: 'Elijah Burgess',
   shortName: 'Eli Burgess',
-  brand: 'Elijah Burgess Consulting',
+  brand: 'Elijah Burgess — Applied AI & Systems Engineering',
   siteUrl: 'https://www.eliburgessconsulting.com',
   email: 'elib@eliburgessconsulting.com',
   github: 'https://github.com/ElijahBurgess',
-  location: 'Madison, WI · Remote',
-  defaultTitle: 'Elijah Burgess — Applied AI Systems, Consulting & Coaching',
+  location: 'Madison, WI · Remote / Hybrid',
+  defaultTitle: 'Elijah Burgess — Applied AI Engineer, Multi-Agent Systems & Consulting',
   defaultDescription:
-    'Applied AI systems, workflow automation consulting, and 1-on-1 coaching by Elijah Burgess in Madison, WI and remotely.',
+    'Applied AI and software engineer building multi-agent orchestration pipelines, local-first MCP retrieval infrastructure, and workflow automation in Madison, WI and remotely.',
 };
 
 export const navItems: NavItem[] = [
@@ -48,13 +59,46 @@ export const navItems: NavItem[] = [
   { label: 'Bio', href: '/#bio' },
 ];
 
-export const heroContent = {
-  kicker: 'Madison, WI · Remote',
-  headline: 'Applied AI systems, workflow automation, and 1-on-1 coaching.',
+export const heroContent: {
+  roleTitle: string;
+  availability: string;
+  location: string;
+  headline: string;
+  subhead: string;
+  primaryCta: { label: string; href: string; tier: string };
+  secondaryCta: { label: string; href: string };
+  pillars: HeroPillar[];
+} = {
+  roleTitle: 'Applied AI & Multi-Agent Systems Engineer',
+  availability: 'Open to AI-Focused Roles & Select Consulting',
+  location: 'Madison, WI · Remote / Hybrid',
+  headline:
+    'Building production AI agents, local-first retrieval systems, and practical automation.',
   subhead:
-    'I build practical software that eliminates repetitive admin work—and partner directly with founders, teams, and individuals to turn good intentions into durable daily execution.',
-  primaryCta: { label: 'Get in Touch', href: '#contact' },
-  secondaryCta: { label: 'Explore AI Projects', href: '#projects' },
+    'I design and ship multi-agent LLM pipelines, fast MCP knowledge servers, and full-stack software in Python, Rust, and TypeScript. Actively seeking AI-leaning engineering, applied AI, and forward-deployed solutions roles.',
+  primaryCta: {
+    label: 'Hire / Get in Touch',
+    href: '#contact',
+    tier: 'AI Role / Hiring',
+  },
+  secondaryCta: { label: 'View Live AI Systems', href: '#projects' },
+  pillars: [
+    {
+      label: 'Agentic Architecture',
+      title: 'Multi-Model & MCP Tooling',
+      detail: 'Tiered LLM orchestration, FastMCP servers, browser agents & quota guardrails.',
+    },
+    {
+      label: 'Production Stack',
+      title: 'Python · Rust · TypeScript',
+      detail: 'FastAPI, React, Tauri v2, PyO3, ONNX, DuckDB, SQLite WAL & Linux infra.',
+    },
+    {
+      label: 'Role Focus',
+      title: 'Applied AI & Solutions',
+      detail: 'AI Engineer, Agentic Workflow Engineer & Forward-Deployed / Technical Roles.',
+    },
+  ],
 };
 
 export const projectsContent: {
@@ -63,14 +107,14 @@ export const projectsContent: {
   items: ProjectEntry[];
 } = {
   sectionLabel: '01 / AI Projects',
-  heading: 'Live systems & shipped software',
+  heading: 'Shipped AI systems & live software',
   items: [
     {
       slug: 'boredgamer-arena',
-      title: 'BoredGamer Arena',
+      title: 'BoredGamer Arena (RL + Rust)',
       summary:
-        'Multiplayer Kingdomino and Partnership Pinochle platform built with zero-copy Rust game engines, self-play reinforcement learning, and ONNX neural bots.',
-      stack: ['Rust · PyO3', 'ONNX', 'WebSockets'],
+        'Multiplayer strategy arena powered by zero-copy Rust game engines, self-play reinforcement learning, IS-MCTS search, and ONNX neural bots over WebSockets.',
+      stack: ['Rust · PyO3', 'ONNX RL', 'WebSockets'],
       href: '/projects/boredgamer-arena',
       liveUrl: 'https://arena.eliburgessconsulting.com',
       liveLabel: 'Play Live Demo',
@@ -81,7 +125,7 @@ export const projectsContent: {
       slug: 'deal-hunter',
       title: 'Automated Deal Hunter',
       summary:
-        'Continuous eBay hardware valuation pipeline with MSRP margin scoring, spec normalization, and an interactive browser deal explorer.',
+        'Continuous hardware arbitrage valuation pipeline with spec normalization, rolling P20 price ceilings in SQLite WAL, and an interactive FastAPI deal explorer.',
       stack: ['Python', 'SQLite WAL', 'FastAPI'],
       href: '/projects/deal-hunter',
       liveUrl: '/projects/deal-hunter#explorer',
@@ -93,17 +137,18 @@ export const projectsContent: {
       slug: 'research-hub',
       title: 'Local-First AI Research Hub',
       summary:
-        'Private MCP knowledge server unifying sub-10ms Zoekt code search, offline documentation, and DuckDB genomic and arXiv indexes.',
-      stack: ['MCP', 'DuckDB', 'Zoekt'],
+        'Private FastMCP retrieval server unifying sub-10ms Zoekt code search across 59 repos with 80K+ DuckDB BM25 arXiv papers and BLAST+ genomics.',
+      stack: ['FastMCP', 'DuckDB BM25', 'Zoekt'],
       href: '/projects/research-hub',
       featured: false,
+      statusEndpoint: '/api/research/status',
     },
     {
       slug: 'coaching-payment-tracker',
-      title: 'Coaching Sync & Billing Pipeline',
+      title: 'Operations & Billing Sync',
       summary:
-        'Automated operations service syncing Google Calendar sessions directly to Square invoices and real-time client ledgers.',
-      stack: ['Python', 'Square API', 'SQLite'],
+        'Automated workflow daemon syncing Google Calendar events to Square invoices, webhook state reconciliation, and real-time client ledgers.',
+      stack: ['Python', 'Square API', 'Webhooks'],
       href: '/projects/coaching-payment-tracker',
       featured: false,
     },
@@ -111,7 +156,7 @@ export const projectsContent: {
       slug: 'toddler-touch-screen-lock',
       title: 'Toddler Touch Screen Lock',
       summary:
-        'Published offline Android app using hardware-key unlock sequences and accessibility overlays to prevent accidental screen taps.',
+        'Published offline Android utility using hardware-key unlock sequences and accessibility overlays to block accidental screen input.',
       stack: ['Kotlin', 'Android', 'Google Play'],
       href: '/projects/toddler-touch-screen-lock',
       liveUrl:
@@ -127,46 +172,46 @@ export const servicesContent: {
   heading: string;
   items: ServiceEntry[];
 } = {
-  sectionLabel: '02 / Services',
-  heading: 'Consulting & coaching built for self-sufficiency',
+  sectionLabel: '02 / Consulting & Coaching',
+  heading: 'Available for contract builds, team advisory & coaching',
   items: [
     {
       id: 'consulting',
       tierValue: 'AI & Workflow Consulting',
-      title: 'AI & Workflow Consulting',
-      audience: 'For small businesses & operators',
+      title: 'AI & Workflow Engineering',
+      audience: 'For startups & operators',
       summary:
-        'Custom automations, private local-first AI tools, and clean internal pipelines that cut hours of manual admin without locking your data into bloated SaaS tiers.',
+        'Custom multi-agent pipelines, private MCP integrations, and internal automations that eliminate manual admin without SaaS lock-in.',
       outcomes: [
-        'Scheduling, billing & intake automation',
-        'Private local or cloud AI workflows',
-        'Full code & documentation handoff',
-      ],
-    },
-    {
-      id: 'coaching',
-      tierValue: '1-on-1 Coaching',
-      title: '1-on-1 Coaching',
-      audience: 'For founders, builders & professionals',
-      summary:
-        'Focused, pragmatic sessions combining Motivational Interviewing with structured habit design to break bottlenecks, build consistency, and untangle digital distractions.',
-      outcomes: [
-        'Focused 8- or 16-session roadmaps',
-        'Durable work, study & focus habits',
-        'Practical tools you own long term',
+        'LLM & multi-agent pipeline builds',
+        'Private search, data & API automation',
+        'Clean code & full ownership handoff',
       ],
     },
     {
       id: 'advisory',
       tierValue: 'AI Training & Advisory',
       title: 'Agentic Workflow Training',
-      audience: 'For individuals & technical teams',
+      audience: 'For teams & builders',
       summary:
-        'Hands-on pair-building and architecture scoping to adopt modern coding agents, research pipelines, and AI workflows without vendor hype.',
+        'Hands-on pair-building and architecture scoping to help teams adopt modern coding agents, local toolchains, and reliable eval loops.',
       outcomes: [
-        'Live pair-building on your real tasks',
-        'Multi-agent & prompt architecture',
-        'Clear build-vs-buy technical scoping',
+        'Live pair-building on production repos',
+        'Multi-agent & MCP workflow design',
+        'Pragmatic build-vs-buy scoping',
+      ],
+    },
+    {
+      id: 'coaching',
+      tierValue: '1-on-1 Coaching',
+      title: '1-on-1 Execution Coaching',
+      audience: 'For engineers & founders',
+      summary:
+        'Structured sessions combining Motivational Interviewing with practical workflow design to break bottlenecks and sustain deep focus.',
+      outcomes: [
+        'Focused 8- or 16-session roadmaps',
+        'Sustainable execution & focus systems',
+        'Tools tailored to how you actually work',
       ],
     },
   ],
@@ -175,39 +220,88 @@ export const servicesContent: {
 export const bioContent: {
   sectionLabel: string;
   heading: string;
-  paragraphs: string[];
+  bioBoxLabel: string;
+  bioBoxTitle: string;
+  paragraph: string;
   facts: BioFact[];
+  achievementsLabel: string;
+  achievementsTitle: string;
+  achievements: BioAchievement[];
 } = {
-  sectionLabel: '03 / Bio',
-  heading: 'Systems engineering grounded in human behavior.',
-  paragraphs: [
-    'I’m Eli Burgess—an AI systems builder, consultant, and coach based in Madison, Wisconsin.',
-    'Before building multi-agent software and self-hosted Linux infrastructure, I spent over 3,000 hours coaching more than 150 clients one-on-one—including two years as a Master-Tier Coach at Healthy Gamer, where I trained in Motivational Interviewing, worked with clients ranging from university students to tech executives, and mentored incoming cohorts of coaches.',
-    'I hold an M.S. in Management and Leadership from Western Governors University, degrees in Psychology and French with an Economics minor from Western Washington University, and I’m completing my MSW at UW–Madison alongside a decade-long meditation practice (150+ days in silent retreat). Whether I’m automating a business workflow or working one-on-one with a client, my goal is the same: strip away noise and build something practical that holds up in daily life.',
-  ],
+  sectionLabel: '03 / Bio & Achievements',
+  heading: 'AI engineering backed by human-systems fluency',
+  bioBoxLabel: 'Background',
+  bioBoxTitle: 'Engineering & human systems',
+  paragraph:
+    'I’m Eli Burgess, an applied AI and software engineer in Madison, Wisconsin focused on multi-agent orchestration, fast local retrieval infrastructure, reinforcement learning engines, and practical workflow automation on Linux. Alongside hands-on engineering, I hold an M.S. in Management & Leadership, am completing my MSW at UW–Madison, and bring 3,000+ hours of 1-on-1 client and executive coaching—making me equally comfortable debugging Rust/Python systems and partnering directly with stakeholders to ship software people actually adopt.',
   facts: [
-    { label: 'Coaching Experience', value: '3,000+ 1-on-1 hours · 150+ clients' },
+    {
+      label: 'Languages & Frameworks',
+      value: 'Python, Rust (PyO3), TypeScript, React, FastAPI, Tauri v2',
+    },
+    {
+      label: 'AI & Data Systems',
+      value: 'Multi-Agent LLMs, MCP, ONNX RL, DuckDB, Zoekt, SQLite',
+    },
     {
       label: 'Education',
       value: 'M.S. Management & Leadership · MSW Candidate (UW–Madison)',
     },
     {
-      label: 'Technical Stack',
-      value: 'Python, Rust, TypeScript, SQLite / DuckDB, Linux',
+      label: 'Work & Location',
+      value: 'Madison, WI · Open to Remote & Hybrid AI Roles',
     },
-    { label: 'Location & Languages', value: 'Madison, WI & Remote · English & French' },
+  ],
+  achievementsLabel: 'Current Work',
+  achievementsTitle: 'Selected AI & software achievements',
+  achievements: [
+    {
+      title: 'Tiered Multi-Agent Orchestration',
+      detail:
+        'Built two-tier agent pipelines routing frontier reasoning models to fast coding/Playwright browser workers with automated PreToolUse model-quota guardrails.',
+    },
+    {
+      title: 'Sub-10ms Local MCP Knowledge Hub',
+      detail:
+        'Engineered a FastMCP server uniting 65 Zoekt code shards (59 repos), offline docs, 80K+ DuckDB BM25 arXiv preprints, and BLAST+ genomics.',
+    },
+    {
+      title: 'Rust + ONNX Reinforcement Learning',
+      detail:
+        'Built zero-copy Rust game simulations, self-play RL pipelines, and ONNX CPU inference bots deployed live at arena.eliburgessconsulting.com.',
+    },
+    {
+      title: 'Automated Valuation & LLM Curation',
+      detail:
+        'Shipped continuous eBay hardware arbitrage scoring (SQLite WAL + FastAPI) and a 4-stage LLM structured-depth technical discovery funnel.',
+    },
+    {
+      title: 'End-to-End Product & Leadership Execution',
+      detail:
+        'Shipped a 25 MB Tauri v2 desktop hub, self-hosted Proxmox/Cloudflare services, a Google Play Android app, and 3,000+ hours of 1-on-1 coaching.',
+    },
   ],
 };
 
 export const contactContent = {
-  sectionLabel: '04 / Contact',
-  heading: 'Start a conversation',
+  sectionLabel: '04 / Hire & Contact',
+  heading: 'Hiring for an AI-leaning role—or scoping a project?',
   subhead:
-    'Share briefly what you are building or working through. I read every inquiry personally and respond within one business day.',
+    'Reach out about full-time or contract AI engineering, applied AI, and technical solutions roles, or send a consulting/coaching note. I reply within one business day.',
+  roleHighlights: [
+    {
+      label: 'Target Roles',
+      value: 'Applied AI Engineer · Multi-Agent / Workflow Engineer · Forward-Deployed / Solutions',
+    },
+    {
+      label: 'Availability',
+      value: 'Full-Time, Contract & Select Consulting · Madison, WI or Remote',
+    },
+  ],
   topics: [
+    'AI Role / Hiring',
     'AI & Workflow Consulting',
-    '1-on-1 Coaching',
     'AI Training & Advisory',
-    'General',
+    '1-on-1 Coaching',
   ],
 };

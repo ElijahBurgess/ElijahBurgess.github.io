@@ -20,7 +20,11 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
         return (
           <article class="project-card project-card-featured">
             <div class="card-meta">
-              <span class="card-stack mono">{project.stack.join(' / ')}</span>
+              <div class="stack-pills">
+                {project.stack.map((tag) => (
+                  <span class="stack-pill mono">{tag}</span>
+                ))}
+              </div>
               {project.statusEndpoint && (
                 <span
                   class="live-metric mono"
@@ -61,7 +65,24 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
         const externalLive = isExternal(project.liveUrl);
         return (
           <article class="project-card project-card-secondary">
-            <p class="card-stack mono">{project.stack.join(' / ')}</p>
+            <div class="card-meta card-meta-compact">
+              <div class="stack-pills">
+                {project.stack.map((tag) => (
+                  <span class="stack-pill mono">{tag}</span>
+                ))}
+              </div>
+              {project.statusEndpoint && (
+                <span
+                  class="live-metric mono"
+                  data-live-metric={project.slug}
+                  data-status-endpoint={project.statusEndpoint}
+                >
+                  <span class="live-dot" aria-hidden="true"></span>
+                  <span class="live-metric-text">MCP Server</span>
+                </span>
+              )}
+            </div>
+
             <h3 class="card-title-secondary">{project.title}</h3>
             <p class="card-summary-secondary">{project.summary}</p>
 
@@ -134,11 +155,15 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
               textEl.textContent =
                 count !== null ? 'Live · ' + count + ' Deals' : 'Live App';
             }
+          } else if (slug === 'research-hub' && data.online !== false) {
+            el.classList.add('is-live');
+            if (textEl) {
+              textEl.textContent = 'Live · MCP';
+            }
           }
         })
         .catch(function () {
           clearTimeout(timeoutId);
-          if (textEl) textEl.textContent = 'Interactive Demo';
         });
     });
   })();
@@ -148,7 +173,7 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
   .projects-featured {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1.15rem;
   }
 
   @media (min-width: 780px) {
@@ -160,8 +185,8 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
   .projects-secondary {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.25rem;
-    margin-top: 1.25rem;
+    gap: 1.15rem;
+    margin-top: 1.15rem;
   }
 
   @media (min-width: 860px) {
@@ -186,7 +211,8 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
   }
 
   .project-card-featured {
-    padding: 1.65rem;
+    padding: 1.55rem;
+    border-top: 2px solid var(--border-accent);
   }
 
   .project-card-secondary {
@@ -199,24 +225,37 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem 0.75rem;
-    margin-bottom: 1rem;
+    padding-bottom: 0.9rem;
+    margin-bottom: 0.95rem;
+    border-bottom: 1px solid var(--border-subtle);
   }
 
-  .card-stack {
-    font-size: 0.75rem;
-    letter-spacing: 0.02em;
-    color: var(--text-muted);
+  .card-meta-compact {
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.85rem;
   }
 
-  .project-card-secondary .card-stack {
-    margin-bottom: 0.75rem;
+  .stack-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .stack-pill {
+    font-size: 0.71rem;
+    letter-spacing: 0.01em;
+    color: var(--text-secondary);
+    background-color: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    padding: 0.18rem 0.48rem;
   }
 
   .live-metric {
     display: inline-flex;
     align-items: center;
-    gap: 0.42rem;
-    font-size: 0.73rem;
+    gap: 0.4rem;
+    font-size: 0.72rem;
     color: var(--text-muted);
     white-space: nowrap;
   }
@@ -231,7 +270,7 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
   }
 
   .live-metric.is-live {
-    color: var(--text-secondary);
+    color: var(--text-primary);
   }
 
   .live-metric.is-live .live-dot {
@@ -239,33 +278,33 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
   }
 
   .card-title-featured {
-    font-size: 1.25rem;
-    margin-bottom: 0.6rem;
+    font-size: 1.22rem;
+    margin-bottom: 0.55rem;
   }
 
   .card-summary-featured {
-    font-size: 0.95rem;
-    line-height: 1.62;
-    color: var(--text-secondary);
-    margin-bottom: 1.5rem;
-  }
-
-  .card-title-secondary {
-    font-size: 1.08rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .card-summary-secondary {
-    font-size: 0.9rem;
-    line-height: 1.58;
+    font-size: 0.94rem;
+    line-height: 1.6;
     color: var(--text-secondary);
     margin-bottom: 1.35rem;
   }
 
+  .card-title-secondary {
+    font-size: 1.06rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .card-summary-secondary {
+    font-size: 0.89rem;
+    line-height: 1.56;
+    color: var(--text-secondary);
+    margin-bottom: 1.2rem;
+  }
+
   .card-footer {
     margin-top: auto;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--border-hairline);
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -274,7 +313,7 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
   }
 
   .card-footer-compact {
-    padding-top: 1.05rem;
+    padding-top: 0.9rem;
   }
 
   .card-accent-link {
@@ -282,7 +321,7 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
     align-items: center;
     gap: 0.35rem;
     font-size: 0.82rem;
-    font-weight: 550;
+    font-weight: 600;
     color: var(--accent);
     transition: color 140ms ease;
   }
