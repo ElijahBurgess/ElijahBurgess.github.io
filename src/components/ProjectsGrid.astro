@@ -153,7 +153,7 @@ const isExternal = (url?: string) => Boolean(url && /^https?:\/\//.test(url));
                   ? data.active_deals_count
                   : null;
               textEl.textContent =
-                count !== null ? 'Live · ' + count + ' Deals' : 'Live App';
+                count !== null ? 'Live · ' + count + ' eBay Listings' : 'Live eBay Feed';
             }
           } else if (slug === 'research-hub' && data.online !== false) {
             el.classList.add('is-live');

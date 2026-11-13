@@ -479,7 +479,7 @@ async def deal_hunter_deals(
     max_price: Optional[float] = None,
     config_tier: Optional[str] = None,
     q: Optional[str] = None,
-    limit: int = Query(default=30, ge=1, le=100),
+    limit: int = Query(default=150, ge=1, le=250),
 ):
     """
     Queries active deals with positive savings from eBay Deal Hunter SQLite DB in read-only mode.

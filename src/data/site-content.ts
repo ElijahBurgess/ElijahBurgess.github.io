@@ -127,13 +127,13 @@ export const projectsContent: {
     },
     {
       slug: 'deal-hunter',
-      title: 'Automated Deal Hunter',
+      title: 'eBay Hardware Deal Hunter',
       summary:
-        'Dockerized OAuth 2.0 eBay valuation pipeline with hardware-compatibility rules, rolling price ceilings in SQLite WAL, and an interactive FastAPI explorer.',
+        'Live OAuth 2.0 eBay hardware feed with listing photos, grouped category valuation, and rolling P20 price ceilings in SQLite WAL.',
       stack: ['Python', 'SQLite WAL', 'FastAPI'],
       href: '/projects/deal-hunter',
       liveUrl: '/projects/deal-hunter#explorer',
-      liveLabel: 'Open Deal Explorer',
+      liveLabel: 'Browse Live eBay Listings',
       featured: true,
       statusEndpoint: '/api/deal-hunter/summary',
     },
