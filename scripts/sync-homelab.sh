@@ -21,7 +21,7 @@ if git remote get-url origin >/dev/null 2>&1; then
 fi
 
 echo "==> [2/4] Syncing Forgejo (CT 107) & live workspace on VM 102 (/home/agent/workspace/Website)..."
-if git push forgejo main 2>/dev/null; then
+if GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND="ssh -o BatchMode=yes -o ConnectTimeout=3" git push forgejo main 2>/dev/null; then
   ssh -o BatchMode=yes "$VM102_HOST" "cd /home/agent/workspace/Website && git fetch forgejo && git reset --hard forgejo/main && npm install --no-audit --no-fund"
 else
   # Relay bundle to VM 102 and push canonical main to Forgejo from VM 102
