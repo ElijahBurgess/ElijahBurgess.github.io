@@ -4,13 +4,15 @@ import ProjectLayout from '../../layouts/ProjectLayout.astro';
 
 <ProjectLayout
   title="BoredGamer Arena"
-  description="Multiplayer Kingdomino and Partnership Pinochle server built with zero-copy Rust simulation engines, self-play reinforcement learning, and sub-2ms ONNX CPU inference."
+  description="Multiplayer Kingdomino and Partnership Pinochle server built with zero-copy Rust simulation engines, self-play reinforcement learning, sub-2ms ONNX CPU inference, and post-game AI replay analysis."
   canonicalPath="/projects/boredgamer-arena"
   category="Reinforcement Learning & Game AI"
-  summary="Multiplayer board and card game lounge running on a 2-vCPU Proxmox container with no GPU. Combines zero-copy Rust bitboard simulation cores, self-play reinforcement learning, and quantized ONNX CPU policies."
+  summary="Multiplayer board and card game lounge running on a 2-vCPU Proxmox container with no GPU. Combines zero-copy Rust bitboard simulation cores, self-play reinforcement learning, quantized ONNX CPU policies, and turn-by-turn post-game AI replay analysis."
   stack={['Rust · PyO3', 'ONNX Runtime CPU', 'IS-MCTS', 'FastAPI WebSockets', 'Proxmox LXC']}
   liveUrl="https://arena.eliburgessconsulting.com"
   liveLabel="Launch Arena Lounge ↗"
+  secondaryUrl="https://arena.eliburgessconsulting.com/kingdomino/"
+  secondaryLabel="Play Kingdomino ↗"
 >
   <!-- Live Telemetry + Direct Game Launchers -->
   <section class="studio-panel arena-console" aria-labelledby="arena-console-heading">
@@ -55,10 +57,10 @@ import ProjectLayout from '../../layouts/ProjectLayout.astro';
 
     <div class="launchers-grid">
       <div class="launcher-card">
-        <div class="launcher-meta mono">2–4 Players · 5×5 &amp; 7×7 · 12 Bot Tiers</div>
+        <div class="launcher-meta mono">2–4 Players · 5×5 &amp; 7×7 · Post-Game AI Replay</div>
         <h3 class="launcher-name">Kingdomino AI</h3>
         <p class="launcher-desc">
-          Territory drafting against calibrated bots ranging from greedy Rust heuristics and 400-rollout PUCT search up to <code>baron_*</code> Siamese ResNet ONNX policies and endgame solvers.
+          Territory drafting against calibrated bots up to <code>baron_*</code> Siamese ResNet ONNX policies, with custom flag/crest castle markers, a single-line AI win-likelihood hover graph, and step-by-step post-game replay with AI move reasoning.
         </p>
         <a
           href="https://arena.eliburgessconsulting.com/kingdomino/"
